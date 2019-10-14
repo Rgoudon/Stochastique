@@ -7,12 +7,12 @@ public class FileAttente {
     protected float mu;         // Nombre de services par unité de temps
     protected int S;            // Nombre de services (S)
     protected int K;            // Nombre maximum de clients dans le système (K)
-    private float rho;          // ratio lamdba/S*mu
-    private float L;            // nombre de clients dans le système
-    private float Lq;           // nombre de clients dans la file
-    private float W;            // temps d'attente moyen dans le système
-    private float Wq;           // temps d'attentee moyen dans la file 
-    private List<Float> q;      // P(Xt=i) : probabilité d'être à l'état i 
+    protected float rho;          // ratio lamdba/S*mu
+    protected float L;            // nombre de clients dans le système
+    protected float Lq;           // nombre de clients dans la file
+    protected float W;            // temps d'attente moyen dans le système
+    protected float Wq;           // temps d'attentee moyen dans la file 
+    protected List<Float> q;      // P(Xt=i) : probabilité d'être à l'état i 
 
     public float getLambda() {
         return lambda;
