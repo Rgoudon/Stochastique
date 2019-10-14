@@ -12,7 +12,7 @@ public class FileAttente {
     protected float Lq;           // nombre de clients dans la file
     protected float W;            // temps d'attente moyen dans le système
     protected float Wq;           // temps d'attentee moyen dans la file 
-    protected List<Float> q;      // P(Xt=i) : probabilité d'être à l'état i 
+    protected List<Float> q;      // P(Xt=i) : probabilité qu'il y ai i clients 
 
     public float getLambda() {
         return lambda;
