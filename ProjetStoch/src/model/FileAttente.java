@@ -1,3 +1,4 @@
+package model;
 
 public class FileAttente {
     protected float lambda;   // Nombre de clients par unité de temps
