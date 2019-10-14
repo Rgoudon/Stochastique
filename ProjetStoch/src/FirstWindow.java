@@ -1,3 +1,5 @@
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -53,6 +55,15 @@ public class FirstWindow extends Stage {
         MM1 = new Button("File avec 1 serveur (MM1)");
         MM1.minWidth(10);
         MM1.setPrefWidth(450);
+
+        MM1.setOnAction( new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                MM1Parameter p = new MM1Parameter();
+                p.init();
+                stage.close();
+                }
+            }
+        );
     }
 
     private void setMMSButton(){
