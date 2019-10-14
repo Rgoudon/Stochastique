@@ -1,3 +1,5 @@
+package model;
+
 public class Utils {
     public static int fact(int x) {
         int product = 1;
