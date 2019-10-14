@@ -4,27 +4,27 @@ public class MM1 extends FileAttente {
 
     MM1() {
         super();
-        nbServer = 1;
+        S = 1;
     }
 
     public float computeRho() {
-        return this.lambda/this.mu;
+        return lambda/mu;
     }
 
     public float computeNbCustomerInSystem() {
-        return this.lambda/(this.mu-this.lambda);
+        return lambda/(mu-lambda);
     }
 
     public float computeNbCustomerInQueue() {
-        return (this.lambda*this.lambda)/(this.mu*(this.mu-this.lambda));
+        return (lambda*lambda)/(mu*(mu-lambda));
     }
 
     public float computeMeanTimeInSystem() {
-        return 1/(this.mu-this.lambda);
+        return 1/(mu-lambda);
     }
 
     public float computeMeanTimeInQueue() {
-        return this.lambda/(this.mu*(this.mu-this.lambda));
+        return lambda/(mu*(mu-lambda));
     }
 
 
