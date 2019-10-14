@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 public class MM1K extends FileAttente {
     
 
@@ -26,16 +28,14 @@ public class MM1K extends FileAttente {
     }
 
     public float computeNbCustomerInQueue() {
-        return (this.lambda*this.lambda)/(this.mu*(this.mu-this.lambda));
+        return (float) 0.0;
     }
 
     public float computeMeanTimeInSystem() {
-        return 1/(this.mu-this.lambda);
+        return (float) 0.0;
     }
 
     public float computeMeanTimeInQueue() {
-        return this.lambda/(this.mu*(this.mu-this.lambda));
+        return (float) 0.0;
     }
-
-
 }
