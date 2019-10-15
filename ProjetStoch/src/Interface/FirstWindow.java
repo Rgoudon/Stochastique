@@ -1,3 +1,5 @@
+package Interface;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -70,6 +72,15 @@ public class FirstWindow extends Stage {
         MMS = new Button("File avec plusieurs serveurs (MMS)");
         MMS.minWidth(10);
         MMS.setPrefWidth(450);
+
+        MMS.setOnAction( new EventHandler<ActionEvent>() {
+                             @Override public void handle(ActionEvent e) {
+                                 MMSParameter p = new MMSParameter();
+                                 p.init();
+                                 stage.close();
+                             }
+                         }
+        );
     }
 
     private void setMM1KButton(){
@@ -77,6 +88,15 @@ public class FirstWindow extends Stage {
         MM1K = new Button("File  avec 1 serveur, clients limité dans le système (MM1K)");
         MM1K.minWidth(10);
         MM1K.setPrefWidth(450);
+
+        MM1K.setOnAction( new EventHandler<ActionEvent>() {
+                             @Override public void handle(ActionEvent e) {
+                                 MM1KParameter p = new MM1KParameter();
+                                 p.init();
+                                 stage.close();
+                             }
+                         }
+        );
 
     }
 
