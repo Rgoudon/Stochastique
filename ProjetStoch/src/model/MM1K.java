@@ -54,7 +54,7 @@ public class MM1K extends FileAttente {
             }
         }
         else {
-            for(int i=0;i<max;i++) {
+            for(int i=0;i<max+1;i++) {
                 q.add(i, (float) ((float) ((1 - rho)*Math.pow(rho, i))/(1 - Math.pow(rho, K+1))));
             }
         }
