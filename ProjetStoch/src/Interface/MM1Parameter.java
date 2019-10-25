@@ -57,14 +57,15 @@ public class MM1Parameter extends Stage {
         setMu();
         setValidateButton();
         setFixedLabel();
+        setResultatLabel(0,0,0,0);
         GridPane root = new GridPane();
 
         root.addRow(1, lambdaLabel,lambdaField);
         root.addRow(2, muLabel,muField);
         root.addRow(3, new Label(""), validateButton);
         root.addRow(4, resultatLabel);
-        root.addRow(5, nbClientSysLabel,new Label(""), nbClientFileLabel);
-        root.addRow(6, tmpsAttSysLabel,new Label(""), tmpsAttFileLabel);
+        root.addRow(5, nbClientSysLabel,nbClientSys, nbClientFileLabel,nbClientFile);
+        root.addRow(6, tmpsAttSysLabel,tmpsAttSys, tmpsAttFileLabel,tmpsAttFile);
 
         // Set the horizontal spacing to 15px
         root.setHgap(15);
@@ -105,10 +106,10 @@ public class MM1Parameter extends Stage {
     }
 
     private void setResultatLabel(float attenteFile , float attenteSys , float clientFile, float clientSys) {
-        tmpsAttSys = new Label("Attente moyenne dans le système");
-        tmpsAttFile = new Label("Attente moyenne dans la file");
-        nbClientFile = new Label("Nombre moyen de client dans la file");
-        nbClientSys = new Label("Nombre moyen de client dans le système");
+        tmpsAttSys = new Label(Float.toString(attenteSys));
+        tmpsAttFile = new Label(Float.toString(attenteFile));
+        nbClientFile = new Label(Float.toString(clientFile));
+        nbClientSys = new Label(Float.toString(clientSys));
     }
 
     private void setValidateButton(){
@@ -119,6 +120,13 @@ public class MM1Parameter extends Stage {
         validateButton.setOnAction( new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                System.out.println(Float.parseFloat(lambdaField.getText()));
+
+                formules.setLambda(Float.parseFloat(lambdaField.getText()));
+                formules.setLambda(Float.parseFloat(muField.getText()));
+
+                setResultatLabel(formules.computeMeanTimeInSystem(),formules.computeMeanTimeInQueue()
+                        ,formules.computeNbCustomerInQueue(),formules.computeNbCustomerInSystem());
 
             }
         });
