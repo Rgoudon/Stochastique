@@ -156,12 +156,14 @@ public class MMSParameter extends Stage{
         validateButton.setOnAction( new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+
                 MMS formules = new MMS(Integer.parseInt(sField.getText()));
                 formules.setLambda(Float.parseFloat(lambdaField.getText()));
                 formules.setMu(Float.parseFloat(muField.getText()));
                 formules.computeRho();
                 setResultatLabel(formules.computeMeanTimeInQueue(),formules.computeMeanTimeInSystem(),
                         formules.computeNbCustomerInQueue(),formules.computeNbCustomerInSystem());
+                updateResults();
             }
         });
     }
