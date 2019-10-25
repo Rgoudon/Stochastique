@@ -65,40 +65,37 @@ public class MMS extends FileAttente {
      * @return float the mean number of customer in the queue
      */
     public float computeNbCustomerInQueue() {
-        Lq = (float) (q.get(0) * (Math.pow(rho * S, S) * rho) / (Utils.fact(S) * Math.pow(1 - rho, 2)));
+        Lq = (float) (computeNbCustomerProbabilities(0).get(0) * (Math.pow(rho * S, S) * rho) / (Utils.fact(S) * Math.pow(1 - rho, 2)));
         return Lq;
     }
 
     /**
      * Compute the mean time spent by a customer in the queue.
-     * The formula is Wq = Lq/lambda, but here the computation doesn't use 
-     * computeNbCustomerInQueue(). It recalculates it.
+     * The formula is Wq = Lq/lambda.
      * @return float the mean time spent by a customer in the queue
      */
     public float computeMeanTimeInQueue() {
-        Wq = (float) ((float) (q.get(0)/lambda) * (Math.pow(rho * S, S) * rho) / (Utils.fact(S) * Math.pow(1 - rho, 2)));
+        Wq = (float) ((float) (computeNbCustomerProbabilities(0).get(0)/lambda) * (Math.pow(rho * S, S) * rho) / (Utils.fact(S) * Math.pow(1 - rho, 2)));
         return Wq;
     }
 
     /**
      * Compute the mean time spent by a customer in the system.
-     * The formula is W = Wq + 1/mu, but here the computation doesn't use 
-     * computeMeanTimeInQueue(). It recalculates it.
+     * The formula is W = Wq + 1/mu.
      * @return float the mean time spent by a customer in the system
      */
     public float computeMeanTimeInSystem() {
-        W = (float) ((float) (q.get(0)/lambda) * (Math.pow(rho * S, S) * rho) / (Utils.fact(S) * Math.pow(1 - rho, 2))) + 1/mu;
+        W = (float) ((float) (computeNbCustomerProbabilities(0).get(0)/lambda) * (Math.pow(rho * S, S) * rho) / (Utils.fact(S) * Math.pow(1 - rho, 2))) + 1/mu;
         return W;
     }
 
     /**
      * Compute the mean number of customers in the system.
-     * The formula is L = lambda*W, but here the computation doesn't use 
-     * computeMeanTimeInSystem(). It recalculates it.
+     * The formula is L = lambda*W.
      * @return float the mean number of customers in the system
      */
     public float computeNbCustomerInSystem() {
-        L = ((float) ((float) (q.get(0)/lambda) * (Math.pow(rho * S, S) * rho) / (Utils.fact(S) * Math.pow(1 - rho, 2)) + 1/mu))*lambda;
+        L = ((float) ((float) (computeNbCustomerProbabilities(0).get(0)/lambda) * (Math.pow(rho * S, S) * rho) / (Utils.fact(S) * Math.pow(1 - rho, 2)) + 1/mu))*lambda;
         return L;
     }
 }
