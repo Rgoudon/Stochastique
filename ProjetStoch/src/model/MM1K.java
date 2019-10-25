@@ -49,7 +49,7 @@ public class MM1K extends FileAttente {
         q = new ArrayList<>();
         // Calcul de q
         if (rho == 1) {
-            for(int i=0;i<max;i++) {
+            for(int i=0;i<max+1;i++) {
                 q.add(i, (float) (1/(K+1)));
             }
         }
