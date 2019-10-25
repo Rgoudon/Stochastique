@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MM1K extends FileAttente {
@@ -28,15 +29,16 @@ public class MM1K extends FileAttente {
     }
 
     public float computeNbCustomerInQueue() {
-        return (float) computeNbCustomerInSystem() - (1 - computeNbCustomerProbabilities(0).get(0));
+        Lq = (float) computeNbCustomerInSystem() - (1 - computeNbCustomerProbabilities(0).get(0));
+        return Lq;
     }
 
     public float computeMeanTimeInSystem() {
-        return (float) computeNbCustomerInQueue()/lambda;
+        return W = (float) computeNbCustomerInQueue()/lambda;
     }
 
     public float computeMeanTimeInQueue() {
-        return (float) computeMeanTimeInSystem() - 1/mu;
+        return Wq = (float) computeMeanTimeInSystem() - 1/mu;
     }
 
     /**
@@ -44,6 +46,7 @@ public class MM1K extends FileAttente {
      * @return the list of probabilities
      */
     public List<Float> computeNbCustomerProbabilities(int max) {
+        q = new ArrayList<>();
         // Calcul de q
         if (rho == 1) {
             for(int i=0;i<max;i++) {
