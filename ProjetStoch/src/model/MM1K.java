@@ -50,12 +50,12 @@ public class MM1K extends FileAttente {
         // Calcul de q
         if (rho == 1) {
             for(int i=0;i<max;i++) {
-                q.set(i, (float) (1/(K+1)));
+                q.add(i, (float) (1/(K+1)));
             }
         }
         else {
             for(int i=0;i<max;i++) {
-                q.set(i, (float) ((float) ((1 - rho)*Math.pow(rho, i))/(1 - Math.pow(rho, K+1))));
+                q.add(i, (float) ((float) ((1 - rho)*Math.pow(rho, i))/(1 - Math.pow(rho, K+1))));
             }
         }
         return q;
