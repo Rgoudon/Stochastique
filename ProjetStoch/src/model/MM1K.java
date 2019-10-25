@@ -5,7 +5,7 @@ import java.util.List;
 public class MM1K extends FileAttente {
     
 
-    MM1K(int maxCustomer) {
+    public MM1K(int maxCustomer) {
         super();
         this.S = 1;
         this.K = maxCustomer;
@@ -28,14 +28,33 @@ public class MM1K extends FileAttente {
     }
 
     public float computeNbCustomerInQueue() {
-        return (float) 0.0;
+        return (float) computeNbCustomerInSystem() - (1 - computeNbCustomerProbabilities(0).get(0));
     }
 
     public float computeMeanTimeInSystem() {
-        return (float) 0.0;
+        return (float) computeNbCustomerInQueue()/lambda;
     }
 
     public float computeMeanTimeInQueue() {
-        return (float) 0.0;
+        return (float) computeMeanTimeInSystem() - 1/mu;
+    }
+
+    /**
+     *  Compute the probabilities of having i customer in the system, i being the index of the list
+     * @return the list of probabilities
+     */
+    public List<Float> computeNbCustomerProbabilities(int max) {
+        // Calcul de q
+        if (rho == 1) {
+            for(int i=0;i<max;i++) {
+                q.set(i, (float) (1/(K+1)));
+            }
+        }
+        else {
+            for(int i=0;i<max;i++) {
+                q.set(i, (float) ((float) ((1 - rho)*Math.pow(rho, i))/(1 - Math.pow(rho, K+1))));
+            }
+        }
+        return q;
     }
 }
