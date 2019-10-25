@@ -9,24 +9,32 @@ public class MM1 extends FileAttente {
         S = 1;
     }
 
-    public float computeRho() {
-        return lambda/mu;
+    public float computeRho() throws  ArithmeticException {
+        rho = lambda/mu;
+        if (rho < 1) {
+            throw new  ArithmeticException("Lambda is < 1") ;
+        }
+        return rho;
     }
 
     public float computeNbCustomerInSystem() {
-        return lambda/(mu-lambda);
+        L = lambda/(mu-lambda);
+        return L;
     }
 
     public float computeNbCustomerInQueue() {
-        return (lambda*lambda)/(mu*(mu-lambda));
+        Lq = (lambda*lambda)/(mu*(mu-lambda));
+        return Lq;
     }
 
     public float computeMeanTimeInSystem() {
-        return 1/(mu-lambda);
+        W = 1/(mu-lambda);
+        return W;
     }
 
     public float computeMeanTimeInQueue() {
-        return lambda/(mu*(mu-lambda));
+        Wq = lambda/(mu*(mu-lambda));
+        return Wq;
     }
 
     /**
