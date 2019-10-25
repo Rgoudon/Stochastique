@@ -11,8 +11,8 @@ public class MM1 extends FileAttente {
 
     public float computeRho() throws  ArithmeticException {
         rho = lambda/mu;
-        if (rho < 1) {
-            throw new  ArithmeticException("Lambda is < 1") ;
+        if (rho > 1) {
+            throw new  ArithmeticException("Lambda is > 1") ;
         }
         return rho;
     }
