@@ -34,13 +34,14 @@ public class MM1Parameter extends Stage {
     private Label tmpsAttSys;
     private Label tmpsAttFile;
 
-    private MM1 formules;
+    private MM1 formules = new MM1();
 
     private Button validateButton;
 
     public void init(){
 
         stage = this;
+        setResultatLabel(0,0,0,0);
         setWindow();
         stage.show();
     }
@@ -57,7 +58,6 @@ public class MM1Parameter extends Stage {
         setMu();
         setValidateButton();
         setFixedLabel();
-        setResultatLabel(0,0,0,0);
         GridPane root = new GridPane();
 
         root.addRow(1, lambdaLabel,lambdaField);
@@ -106,10 +106,34 @@ public class MM1Parameter extends Stage {
     }
 
     private void setResultatLabel(float attenteFile , float attenteSys , float clientFile, float clientSys) {
+
         tmpsAttSys = new Label(Float.toString(attenteSys));
         tmpsAttFile = new Label(Float.toString(attenteFile));
         nbClientFile = new Label(Float.toString(clientFile));
         nbClientSys = new Label(Float.toString(clientSys));
+    }
+
+    private void updateResults(){
+
+        GridPane root = new GridPane();
+
+        root.addRow(1, lambdaLabel,lambdaField);
+        root.addRow(2, muLabel,muField);
+        root.addRow(3, new Label(""), validateButton);
+        root.addRow(4, resultatLabel);
+        root.addRow(5, nbClientSysLabel,nbClientSys, nbClientFileLabel,nbClientFile);
+        root.addRow(6, tmpsAttSysLabel,tmpsAttSys, tmpsAttFileLabel,tmpsAttFile);
+
+        // Set the horizontal spacing to 15px
+        root.setHgap(15);
+        // Set the vertical spacing to 25px
+        root.setVgap(25);
+
+        root.setStyle("-fx-padding: 15;" );
+
+        Scene scene = new Scene(root);
+
+        stage.setScene(scene);
     }
 
     private void setValidateButton(){
@@ -120,13 +144,25 @@ public class MM1Parameter extends Stage {
         validateButton.setOnAction( new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                System.out.println(Float.parseFloat(lambdaField.getText()));
 
                 formules.setLambda(Float.parseFloat(lambdaField.getText()));
-                formules.setLambda(Float.parseFloat(muField.getText()));
+                formules.setMu(Float.parseFloat(muField.getText()));
+                formules.computeRho();
+                System.out.println("lamb " + Float.parseFloat(lambdaField.getText()));
+                System.out.println("mu " + Float.parseFloat(muField.getText()));
+                System.out.println("Rho = " + formules.getRho());
+
+
+
+                System.out.println("tmps moyen systeme :" + formules.computeMeanTimeInSystem() + " \n"+
+                                "tmps moyen file :" + formules.computeMeanTimeInQueue()+ " \n" +
+                        "nb client file :" + formules.computeNbCustomerInQueue() + "\n" +
+                        "nb client sys :" + formules.computeNbCustomerInSystem());
+
 
                 setResultatLabel(formules.computeMeanTimeInSystem(),formules.computeMeanTimeInQueue()
                         ,formules.computeNbCustomerInQueue(),formules.computeNbCustomerInSystem());
+                updateResults();
 
             }
         });
