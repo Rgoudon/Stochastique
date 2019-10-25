@@ -6,7 +6,7 @@ import java.util.List;
 class MMS extends FileAttente {
     private List<Float> r;      // Tableau utilisé pour calculer q0
 
-    MMS(int nbServer) {
+    public MMS(int nbServer) {
         super();
         S = nbServer;
         computeR();
