@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-class MMS extends FileAttente {
+public class MMS extends FileAttente {
     private List<Float> r;      // Tableau utilisé pour calculer q0
 
     public MMS(int nbServer) {
