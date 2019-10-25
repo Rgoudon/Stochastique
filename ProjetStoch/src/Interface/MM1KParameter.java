@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.MM1K;
 
 public class MM1KParameter extends Stage {
 
@@ -16,11 +17,11 @@ public class MM1KParameter extends Stage {
 
     private TextField lambdaField;
     private TextField muField;
-    private TextField sField;
+    private TextField kField;
 
     private Label lambdaLabel;
     private Label muLabel;
-    private Label sLabel;
+    private Label kLabel;
 
     private Label resultatLabel;
 
@@ -40,6 +41,7 @@ public class MM1KParameter extends Stage {
     public void init(){
 
         stage = this;
+        setResultatLabel(0,0,0,0);
         setWindow();
         stage.show();
     }
@@ -59,10 +61,10 @@ public class MM1KParameter extends Stage {
         setValidateButton();
         GridPane root = new GridPane();
 
-        root.addRow(1,lambdaLabel,lambdaField);
-        root.addRow(2,muLabel,muField);
-        root.addRow(3,sLabel,sField);
-        root.addRow(4,new Label(""), validateButton);
+        root.addRow(1, lambdaLabel,lambdaField);
+        root.addRow(2, muLabel,muField);
+        root.addRow(3, kLabel, kField);
+        root.addRow(4, new Label(""), validateButton);
         root.addRow(5, resultatLabel);
         root.addRow(6, nbClientSysLabel,nbClientSys, nbClientFileLabel,nbClientFile);
         root.addRow(7, tmpsAttSysLabel,tmpsAttSys, tmpsAttFileLabel,tmpsAttFile);
@@ -97,11 +99,11 @@ public class MM1KParameter extends Stage {
 
     private void setS(){
 
-        sLabel = new Label("S");
+        kLabel = new Label("K");
 
-        sField = new TextField("2");
-        sField.minWidth(10);
-        sField.setPrefWidth(100);
+        kField = new TextField("2");
+        kField.minWidth(10);
+        kField.setPrefWidth(100);
 
     }
 
@@ -122,6 +124,30 @@ public class MM1KParameter extends Stage {
         nbClientSys = new Label(Float.toString(clientSys));
     }
 
+    private void updateResults(){
+
+        GridPane root = new GridPane();
+
+        root.addRow(1, lambdaLabel,lambdaField);
+        root.addRow(2, muLabel,muField);
+        root.addRow(3, kLabel,kField);
+        root.addRow(4, new Label(""), validateButton);
+        root.addRow(5, resultatLabel);
+        root.addRow(6, nbClientSysLabel,nbClientSys, nbClientFileLabel,nbClientFile);
+        root.addRow(7, tmpsAttSysLabel,tmpsAttSys, tmpsAttFileLabel,tmpsAttFile);
+
+        // Set the horizontal spacing to 15px
+        root.setHgap(15);
+        // Set the vertical spacing to 25px
+        root.setVgap(25);
+
+        root.setStyle("-fx-padding: 15;" );
+
+        Scene scene = new Scene(root);
+
+        stage.setScene(scene);
+    }
+
     private void setValidateButton(){
 
         validateButton = new Button("Valider");
@@ -130,6 +156,13 @@ public class MM1KParameter extends Stage {
         validateButton.setOnAction( new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                MM1K formules = new MM1K(Integer.parseInt(kField.getText()));
+                formules.setLambda(Float.parseFloat(lambdaField.getText()));
+                formules.setMu(Float.parseFloat(muField.getText()));
+                formules.computeRho();
+                setResultatLabel(formules.computeMeanTimeInQueue(),formules.computeMeanTimeInSystem(),
+                        formules.computeNbCustomerInQueue(),formules.computeNbCustomerInSystem());
+                updateResults();
 
             }
         });
