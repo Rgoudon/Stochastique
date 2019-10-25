@@ -161,7 +161,7 @@ public class MM1Parameter extends Stage {
 
 
                 setResultatLabel(formules.computeMeanTimeInSystem(),formules.computeMeanTimeInQueue()
-                        ,formules.computeNbCustomerInQueue(),formules.computeNbCustomerInSystem());
+                        ,formules.computeNbCustomerInSystem(),formules.computeNbCustomerInQueue());
                 updateResults();
 
             }

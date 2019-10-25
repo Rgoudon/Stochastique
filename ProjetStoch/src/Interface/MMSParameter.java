@@ -21,6 +21,18 @@ public class MMSParameter extends Stage{
     private Label muLabel;
     private Label sLabel;
 
+    private Label resultatLabel;
+
+    private Label nbClientSysLabel;
+    private Label nbClientFileLabel;
+    private Label tmpsAttSysLabel;
+    private Label tmpsAttFileLabel;
+
+    private Label nbClientSys;
+    private Label nbClientFile;
+    private Label tmpsAttSys;
+    private Label tmpsAttFile;
+
     private Button validateButton;
 
     public void init(){
@@ -40,12 +52,17 @@ public class MMSParameter extends Stage{
 
         setLambda();
         setMu();
+        setS();
         setValidateButton();
         GridPane root = new GridPane();
 
         root.addRow(1,lambdaLabel,lambdaField);
         root.addRow(2,muLabel,muField);
-        root.addRow(3, validateButton);
+        root.addRow(3,sLabel,sField);
+        root.addRow(4, validateButton);
+        root.addRow(5, resultatLabel);
+        root.addRow(6, nbClientSysLabel,nbClientSys, nbClientFileLabel,nbClientFile);
+        root.addRow(7, tmpsAttSysLabel,tmpsAttSys, tmpsAttFileLabel,tmpsAttFile);
         // Set the horizontal spacing to 15px
         root.setHgap(15);
         // Set the vertical spacing to 25px
