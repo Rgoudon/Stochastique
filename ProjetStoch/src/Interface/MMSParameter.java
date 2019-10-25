@@ -93,9 +93,7 @@ public class MMSParameter extends Stage{
         validateButton.setOnAction( new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                MMSResult p = new MMSResult();
-                p.init();
-                stage.close();
+
             }
         });
     }

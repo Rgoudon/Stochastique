@@ -94,9 +94,7 @@ public class MM1KParameter extends Stage {
         validateButton.setOnAction( new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                MM1KResult p = new MM1KResult();
-                p.init();
-                stage.close();
+
             }
         });
     }
