@@ -44,7 +44,7 @@ public class MM1 extends FileAttente {
     public List<Float> computeNbCustomerProbabilities(int max) {
         // Calcul de q
         for(int i = 0; i<max; i++) {
-            q.set(i, (float) (Math.pow(rho, i)*(1-rho)));
+            q.add(i, (float) (Math.pow(rho, i)*(1-rho)));
         }
         return q;
     }
