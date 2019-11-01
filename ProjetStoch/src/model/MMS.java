@@ -21,6 +21,9 @@ public class MMS extends FileAttente {
 
     public FloatProperty computeRho() {
         rho.setValue(lambda.getValue()/(S.getValue()*mu.getValue()));
+        if (rho.getValue() >= 1) {
+            throw new  ArithmeticException("Lambda is > 1") ;
+        }
         return rho;
     }
 

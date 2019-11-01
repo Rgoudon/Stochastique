@@ -15,7 +15,7 @@ public class MM1 extends FileAttente {
 
     public FloatProperty computeRho() throws  ArithmeticException {
         rho.setValue(lambda.getValue()/mu.getValue());
-        if (rho.getValue() > 1) {
+        if (rho.getValue() >= 1) {
             throw new  ArithmeticException("Lambda is > 1") ;
         }
         return rho;
