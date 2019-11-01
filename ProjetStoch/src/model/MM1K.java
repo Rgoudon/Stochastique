@@ -1,5 +1,9 @@
 package model;
 
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleFloatProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,54 +12,58 @@ public class MM1K extends FileAttente {
 
     public MM1K(int maxCustomer) {
         super();
-        this.S = 1;
-        this.K = maxCustomer;
+        this.S.setValue(1);
+        this.K.setValue(maxCustomer);
     }
 
-    public float computeRho() {
-        rho = lambda/mu;
+    public FloatProperty computeRho() {
+        rho.setValue(lambda.getValue()/mu.getValue());
         return rho;
     }
 
-    public float computeNbCustomerInSystem() {
-        if (rho == 1) {
-            L = K/2;
+    public FloatProperty computeNbCustomerInSystem() {
+        if (rho.getValue() == 1) {
+            L.setValue(K.getValue()/2);
         }
         else {
-            L = (float) (rho*(1 - (K+1)*Math.pow(rho, K) + K*Math.pow(rho, (K+1)))/
-                        ((1 - rho)*(1 - Math.pow(rho,(K+1)))));
+            L.setValue((float) (rho.getValue()*(1 - (K.getValue()+1)*Math.pow(rho.getValue(), K.getValue()) + K.getValue()*Math.pow(rho.getValue(), (K.getValue()+1)))/
+                        ((1 - rho.getValue())*(1 - Math.pow(rho.getValue(),(K.getValue()+1))))));
         }
+        System.out.println("L = " + L.getValue());
         return this.L;
     }
 
-    public float computeNbCustomerInQueue() {
-        Lq = (float) computeNbCustomerInSystem() - (1 - computeNbCustomerProbabilities(0).get(0));
+    public FloatProperty computeNbCustomerInQueue() {
+        Lq.setValue((float) computeNbCustomerInSystem().getValue() - (1 - computeNbCustomerProbabilities(0).get(0).getValue()));
         return Lq;
     }
 
-    public float computeMeanTimeInSystem() {
-        return W = (float) computeNbCustomerInQueue()/lambda;
+    public FloatProperty computeMeanTimeInSystem() {
+
+        W.setValue((float) computeNbCustomerInQueue().getValue()/lambda.getValue());
+        return W;
     }
 
-    public float computeMeanTimeInQueue() {
-        return Wq = (float) computeMeanTimeInSystem() - 1/mu;
+    public FloatProperty computeMeanTimeInQueue() {
+        Wq.setValue((float) computeMeanTimeInSystem().getValue() - 1/mu.getValue());
+        return Wq;
     }
 
     /**
      *  Compute the probabilities of having i customer in the system, i being the index of the list
      * @return the list of probabilities
      */
-    public List<Float> computeNbCustomerProbabilities(int max) {
-        q = new ArrayList<>();
+    public List<FloatProperty> computeNbCustomerProbabilities(int max) {
+        q = new ArrayList<FloatProperty>();
         // Calcul de q
-        if (rho == 1) {
+        if (rho.getValue() == 1) {
             for(int i=0;i<max+1;i++) {
-                q.add(i, (float) (1/(K+1)));
+                q.add(i, new SimpleFloatProperty((float) (1/(K.getValue()+1))));
             }
         }
         else {
             for(int i=0;i<max+1;i++) {
-                q.add(i, (float) ((float) ((1 - rho)*Math.pow(rho, i))/(1 - Math.pow(rho, K+1))));
+                q.add(i, new SimpleFloatProperty((float) ((float) ((1 - rho.getValue())*Math.pow(rho.getValue(), i))/(1 - Math.pow(rho.getValue(), K.getValue()+1)))));
             }
         }
         return q;

@@ -1,73 +1,78 @@
 package model;
 
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 import java.util.List;
 
 public class FileAttente {
-    protected float lambda;     // Nombre de clients par unité de temps
-    protected float mu;         // Nombre de services par unité de temps
-    protected int S;            // Nombre de services (S)
-    protected int K;            // Nombre maximum de clients dans le système (K)
-    protected float rho;          // ratio lamdba/S*mu
-    protected float L;            // nombre de clients dans le système
-    protected float Lq;           // nombre de clients dans la file
-    protected float W;            // temps d'attente moyen dans le système
-    protected float Wq;           // temps d'attentee moyen dans la file 
-    protected List<Float> q;      // P(Xt=i) : probabilité qu'il y ai i clients 
+    protected FloatProperty lambda = new SimpleFloatProperty(0);     // Nombre de clients par unité de temps
+    protected FloatProperty mu = new SimpleFloatProperty(0);         // Nombre de services par unité de temps
+    protected IntegerProperty S = new SimpleIntegerProperty(0);            // Nombre de services (S)
+    protected IntegerProperty K = new SimpleIntegerProperty(0);             // Nombre maximum de clients dans le système (K)
+    protected FloatProperty rho = new SimpleFloatProperty(0);          // ratio lamdba/S*mu
+    protected FloatProperty L = new SimpleFloatProperty(0);            // nombre de clients dans le système
+    protected FloatProperty Lq = new SimpleFloatProperty(0);           // nombre de clients dans la file
+    protected FloatProperty W = new SimpleFloatProperty(0);            // temps d'attente moyen dans le système
+    protected FloatProperty Wq = new SimpleFloatProperty(0);           // temps d'attentee moyen dans la file
+    protected List<FloatProperty> q;      // P(Xt=i) : probabilité qu'il y ai i clients
 
-    public float getLambda() {
+    public FloatProperty getLambda() {
         return lambda;
     }
 
-    public void setLambda(float l) {
+    public void setLambda(FloatProperty l) {
         lambda = l;
     }
 
-    public float getMu() {
+    public FloatProperty getMu() {
         return mu;
     }
 
-    public void setMu(float m) {
+    public void setMu(FloatProperty m) {
         mu = m;
     }
 
-    public int getNbServer() {
+    public IntegerProperty getNbServer() {
         return S;
     }
 
-    public void setNbServer(int nbServer) {
+    public void setNbServer(IntegerProperty nbServer) {
         S = nbServer;
     }
 
-    public int getMaxCust() {
+    public IntegerProperty getMaxCust() {
         return K;
     }
 
-    public void setMaxCust(int maxCust) {
+    public void setMaxCust(IntegerProperty maxCust) {
         K = maxCust;
     }
 
-    public float getRho() {
+    public FloatProperty getRho() {
         return rho;
     }
 
-    public float getNbCustInSystem() {
+    public FloatProperty getNbCustInSystem() {
         return L;
     }
 
-    public float getNbCustInQueue() {
+    public FloatProperty getNbCustInQueue() {
         return Lq;
     }
 
-    public float getMeanTimeInSystem() {
+    public FloatProperty getMeanTimeInSystem() {
         return W;
     }
 
-    public float getMeanTimeInQueue() {
+    public FloatProperty getMeanTimeInQueue() {
         return Wq;
     }
 
-    public List<Float> getProbabilityOfStates() {
+    public List<FloatProperty> getProbabilityOfStates() {
         return q;
     }
-  
+
 }

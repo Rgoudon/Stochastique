@@ -1,39 +1,43 @@
 package model;
 
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 import java.util.List;
 
 public class MM1 extends FileAttente {
 
     public MM1() {
         super();
-        S = 1;
+        S = new SimpleIntegerProperty(1);
     }
 
-    public float computeRho() throws  ArithmeticException {
-        rho = lambda/mu;
-        if (rho > 1) {
+    public FloatProperty computeRho() throws  ArithmeticException {
+        rho.setValue(lambda.getValue()/mu.getValue());
+        if (rho.getValue() > 1) {
             throw new  ArithmeticException("Lambda is > 1") ;
         }
         return rho;
     }
 
-    public float computeNbCustomerInSystem() {
-        L = lambda/(mu-lambda);
+    public FloatProperty computeNbCustomerInSystem() {
+        L.setValue(lambda.getValue()/(mu.getValue()-lambda.getValue()));
         return L;
     }
 
-    public float computeNbCustomerInQueue() {
-        Lq = (lambda*lambda)/(mu*(mu-lambda));
+    public FloatProperty computeNbCustomerInQueue() {
+        Lq.setValue(lambda.getValue()*lambda.getValue()/(mu.getValue()*(mu.getValue()-lambda.getValue())));
         return Lq;
     }
 
-    public float computeMeanTimeInSystem() {
-        W = 1/(mu-lambda);
+    public FloatProperty computeMeanTimeInSystem() {
+        W.setValue(1/(mu.getValue()-lambda.getValue()));
         return W;
     }
 
-    public float computeMeanTimeInQueue() {
-        Wq = lambda/(mu*(mu-lambda));
+    public FloatProperty computeMeanTimeInQueue() {
+        Wq.setValue(lambda.getValue()/(mu.getValue()*(mu.getValue()-lambda.getValue())));
         return Wq;
     }
 
@@ -41,10 +45,10 @@ public class MM1 extends FileAttente {
      *  Compute the probabilities of having i customer in the system, i being the index of the list
      * @return the list of probabilities
      */
-    public List<Float> computeNbCustomerProbabilities(int max) {
+    public List<FloatProperty> computeNbCustomerProbabilities(int max) {
         // Calcul de q
         for(int i = 0; i<max; i++) {
-            q.add(i, (float) (Math.pow(rho, i)*(1-rho)));
+            q.add(i, new SimpleFloatProperty((float) Math.pow(rho.getValue(), i)*(1-rho.getValue())));
         }
         return q;
     }
@@ -55,6 +59,6 @@ public class MM1 extends FileAttente {
      * @return Float
      */
     public Float computeProbabilityOfStayingInSystem(int t) {
-        return (float) Math.exp(-mu*(1 - rho)*t);
+        return (float) Math.exp(-mu.getValue()*(1 - rho.getValue())*t);
     }
 }
