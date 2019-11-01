@@ -6,13 +6,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.MMS;
 
 public class MMSParameter extends Stage{
 
     private Stage stage;//window
+
+    private TitledPane paramPane;
+    private TitledPane resultPane;
 
     private TextField lambdaField;
     private TextField muField;
@@ -61,13 +67,71 @@ public class MMSParameter extends Stage{
         setValidateButton();
         GridPane root = new GridPane();
 
-        root.addRow(1,lambdaLabel,lambdaField);
-        root.addRow(2,muLabel,muField);
-        root.addRow(3,sLabel,sField);
-        root.addRow(4,new Label(""), validateButton);
-        root.addRow(5, resultatLabel);
-        root.addRow(6, nbClientSysLabel,nbClientSys, nbClientFileLabel,nbClientFile);
-        root.addRow(7, tmpsAttSysLabel,tmpsAttSys, tmpsAttFileLabel,tmpsAttFile);
+        // TitledPane "Paramètres"
+        paramPane = new TitledPane();
+        paramPane.setText("Paramètres");
+        // Content for TitledPane "Paramètres"
+        // This pane has 2 columns like this:
+        // -----------------
+        // |  Label  | Field |
+        // |  Label  | Field |
+        // |  Button |
+        // -----------------
+        // This way, we make sure that everything is perfectly aligned
+        // Column 1
+        VBox labelsColumn = new VBox(10);
+        labelsColumn.getChildren().add(lambdaLabel);
+        labelsColumn.getChildren().add(muLabel);
+        labelsColumn.getChildren().add(sLabel);
+        // Column 2
+        VBox fieldsColumn = new VBox(10);
+        fieldsColumn.getChildren().add(lambdaField);
+        fieldsColumn.getChildren().add(muField);
+        fieldsColumn.getChildren().add(sField);
+        // Horizontal box that contains the columns
+        HBox paramContent = new HBox(20);
+        paramContent.getChildren().add(labelsColumn);
+        paramContent.getChildren().add(fieldsColumn);
+        paramContent.getChildren().add(validateButton);
+        paramPane.setContent(paramContent);
+
+        // TitledPane "Résultats"
+        resultPane = new TitledPane();
+        resultPane.setText("Résultats");
+        // Content for TitledPane "Résultats"
+        // This pane has 4 columns like this:
+        // ---------------------------------
+        // | Label | Field | Label | Field |
+        // | Label | Field | Label | Field |
+        // ---------------------------------
+        // This way, we make sure that everything is perfectly aligned
+        // Column 1
+        VBox systemLabelsColumn = new VBox(10);
+        systemLabelsColumn.getChildren().add(nbClientSysLabel);
+        systemLabelsColumn.getChildren().add(tmpsAttSysLabel);
+        // Column 2
+        VBox systemFieldsColumn = new VBox(10);
+        systemFieldsColumn.getChildren().add(nbClientSys);
+        systemFieldsColumn.getChildren().add(tmpsAttSys);
+        // Column 3
+        VBox queueLabelsColumn = new VBox(10);
+        queueLabelsColumn.getChildren().add(nbClientFileLabel);
+        queueLabelsColumn.getChildren().add(tmpsAttFileLabel);
+        // Column 4
+        VBox queueFieldsColumn = new VBox(10);
+        queueFieldsColumn.getChildren().add(nbClientFile);
+        queueFieldsColumn.getChildren().add(tmpsAttFile);
+        // Horizontal box that contains the columns
+        HBox resultContent = new HBox(20);
+        resultContent.getChildren().add(systemLabelsColumn);
+        resultContent.getChildren().add(systemFieldsColumn);
+        resultContent.getChildren().add(queueLabelsColumn);
+        resultContent.getChildren().add(queueFieldsColumn);
+        resultPane.setContent(resultContent);
+
+        root.add(paramPane, 0, 0, 2, 4);
+        root.add(resultPane, 0, 4, 4, 3);
+
         // Set the horizontal spacing to 15px
         root.setHgap(15);
         // Set the vertical spacing to 25px
