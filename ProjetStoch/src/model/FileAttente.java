@@ -5,6 +5,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileAttente {
@@ -17,7 +18,7 @@ public class FileAttente {
     protected FloatProperty Lq = new SimpleFloatProperty(0);           // nombre de clients dans la file
     protected FloatProperty W = new SimpleFloatProperty(0);            // temps d'attente moyen dans le système
     protected FloatProperty Wq = new SimpleFloatProperty(0);           // temps d'attentee moyen dans la file
-    protected List<FloatProperty> q;      // P(Xt=i) : probabilité qu'il y ai i clients
+    protected List<FloatProperty> q = new ArrayList<>();                        // P(Xt=i) : probabilité qu'il y ai i clients
 
     public FloatProperty getLambda() {
         return lambda;
