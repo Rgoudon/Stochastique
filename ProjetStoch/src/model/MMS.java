@@ -16,7 +16,7 @@ public class MMS extends FileAttente {
             throw new IllegalArgumentException("The number of servers must be > 1. Use MM1 instead.");
         }
         S.setValue(nbServer);
-        computeR();
+        computeR(nbServer);
     }
 
     public FloatProperty computeRho() {
@@ -31,7 +31,8 @@ public class MMS extends FileAttente {
      *  Compute the probabilities of having i customer in the system, i being the index of the list
      * @return the list of probabilities
      */
-    public List<FloatProperty> computeNbCustomerProbabilities(int max) {
+    public List<FloatProperty> computeNbCustomerProbabilities() {
+        int max = 10 * (int) Math.ceil(lambda.getValue());
         q = new ArrayList<FloatProperty>();
         // Calcul de q0
         Float q0 = (float) (1 / (getSumR() + Math.pow(rho.getValue()*S.getValue(), S.getValue())/(Utils.fact(S.getValue())*(1-rho.getValue()))));
@@ -55,10 +56,10 @@ public class MMS extends FileAttente {
      * R = \sum_{j=0}^{S-1} ((rho*S)^j)/j! = \sum_{j=0}^{S-1} r
      * @return
      */
-    private List<Float> computeR() {
+    public List<Float> computeR(int S) {
         r = new ArrayList<Float>();
-        for(int i = 0; i<=S.getValue()-1; i++) {
-            r.add((float) (Math.pow(rho.getValue() * S.getValue(), i) / Utils.fact(i)));
+        for(int i = 0; i<=S-1; i++) {
+            r.add((float) (Math.pow(rho.getValue() * S, i) / Utils.fact(i)));
         }
         return r;
     }
@@ -76,7 +77,7 @@ public class MMS extends FileAttente {
      * @return float the mean number of customer in the queue
      */
     public FloatProperty computeNbCustomerInQueue() {
-        Lq.setValue((float) (computeNbCustomerProbabilities(0).get(0).getValue() * (Math.pow(rho.getValue() * S.getValue(), S.getValue()) * rho.getValue()) / (Utils.fact(S.getValue()) * Math.pow(1 - rho.getValue(), 2))));
+        Lq.setValue((float) (computeNbCustomerProbabilities().get(0).getValue() * (Math.pow(rho.getValue() * S.getValue(), S.getValue()) * rho.getValue()) / (Utils.fact(S.getValue()) * Math.pow(1 - rho.getValue(), 2))));
         return Lq;
     }
 
@@ -86,7 +87,7 @@ public class MMS extends FileAttente {
      * @return float the mean time spent by a customer in the queue
      */
     public FloatProperty computeMeanTimeInQueue() {
-        Wq.setValue((float) ((float) (computeNbCustomerProbabilities(0).get(0).getValue()/lambda.getValue()) * (Math.pow(rho.getValue() * S.getValue(), S.getValue()) * rho.getValue()) / (Utils.fact(S.getValue()) * Math.pow(1 - rho.getValue(), 2))));
+        Wq.setValue((float) ((float) (computeNbCustomerProbabilities().get(0).getValue()/lambda.getValue()) * (Math.pow(rho.getValue() * S.getValue(), S.getValue()) * rho.getValue()) / (Utils.fact(S.getValue()) * Math.pow(1 - rho.getValue(), 2))));
         return Wq;
     }
 
@@ -96,7 +97,7 @@ public class MMS extends FileAttente {
      * @return float the mean time spent by a customer in the system
      */
     public FloatProperty computeMeanTimeInSystem() {
-        W.setValue((float) ((computeNbCustomerProbabilities(0).get(0).getValue()/lambda.getValue()) * (Math.pow(rho.getValue() * S.getValue(), S.getValue()) * rho.getValue()) / (Utils.fact(S.getValue()) * Math.pow(1 - rho.getValue(), 2))) + 1/mu.getValue());
+        W.setValue((float) ((computeNbCustomerProbabilities().get(0).getValue()/lambda.getValue()) * (Math.pow(rho.getValue() * S.getValue(), S.getValue()) * rho.getValue()) / (Utils.fact(S.getValue()) * Math.pow(1 - rho.getValue(), 2))) + 1/mu.getValue());
         return W;
     }
 
@@ -106,7 +107,7 @@ public class MMS extends FileAttente {
      * @return float the mean number of customers in the system
      */
     public FloatProperty computeNbCustomerInSystem() {
-        L.setValue((float) (computeNbCustomerProbabilities(0).get(0).getValue()/lambda.getValue()) * (Math.pow(rho.getValue() * S.getValue(), S.getValue()) * rho.getValue()) / (Utils.fact(S.getValue()) * Math.pow(1 - rho.getValue(), 2)) + 1/mu.getValue()*lambda.getValue());
+        L.setValue((float) (computeNbCustomerProbabilities().get(0).getValue()/lambda.getValue()) * (Math.pow(rho.getValue() * S.getValue(), S.getValue()) * rho.getValue()) / (Utils.fact(S.getValue()) * Math.pow(1 - rho.getValue(), 2)) + 1/mu.getValue()*lambda.getValue());
         return L;
     }
 }
