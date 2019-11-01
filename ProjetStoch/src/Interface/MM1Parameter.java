@@ -1,10 +1,12 @@
 package Interface;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.FloatProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -12,12 +14,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.MM1;
 
+import java.util.List;
+
 public class MM1Parameter extends Stage {
 
     private Stage stage;//window
 
     private TitledPane paramPane;
     private TitledPane resultPane;
+    private TitledPane graphsPane;
 
     private TextField lambdaField;
     private TextField muField;
@@ -38,6 +43,8 @@ public class MM1Parameter extends Stage {
     private Label nbClientFileField = new Label();
     private Label tmpsAttSysField = new Label();
     private Label tmpsAttFileField = new Label();
+
+    private LineChart customerProbabilitiesChart ;
 
     private MM1 mm1 = new MM1();
 
@@ -66,68 +73,11 @@ public class MM1Parameter extends Stage {
 
         GridPane root = new GridPane();
 
-        // TitledPane "Paramètres"
-        paramPane = new TitledPane();
-        paramPane.setText("Paramètres");
-        // Content for TitledPane "Paramètres"
-        // This pane has 2 columns like this:
-        // -----------------
-        // |  Label  | Field |
-        // |  Label  | Field |
-        // |  Button |
-        // -----------------
-        // This way, we make sure that everything is perfectly aligned
-        // Column 1
-        VBox labelsColumn = new VBox(10);
-        labelsColumn.getChildren().add(lambdaLabel);
-        labelsColumn.getChildren().add(muLabel);
-        // Column 2
-        VBox fieldsColumn = new VBox(10);
-        fieldsColumn.getChildren().add(lambdaField);
-        fieldsColumn.getChildren().add(muField);
-        // Horizontal box that contains the columns
-        HBox paramContent = new HBox(20);
-        paramContent.getChildren().add(labelsColumn);
-        paramContent.getChildren().add(fieldsColumn);
-        paramContent.getChildren().add(validateButton);
-        paramPane.setContent(paramContent);
+        initNbCustomerProbabilitiesChart();
 
-        // TitledPane "Résultats"
-        resultPane = new TitledPane();
-        resultPane.setText("Résultats");
-        // Content for TitledPane "Résultats"
-        // This pane has 4 columns like this:
-        // ---------------------------------
-        // | Label | Field | Label | Field |
-        // | Label | Field | Label | Field |
-        // ---------------------------------
-        // This way, we make sure that everything is perfectly aligned
-        // Column 1
-        VBox systemLabelsColumn = new VBox(10);
-        systemLabelsColumn.getChildren().add(nbClientSysLabel);
-        systemLabelsColumn.getChildren().add(tmpsAttSysLabel);
-        // Column 2
-        VBox systemFieldsColumn = new VBox(10);
-        systemFieldsColumn.getChildren().add(nbClientSysField);
-        systemFieldsColumn.getChildren().add(tmpsAttSysField);
-        // Column 3
-        VBox queueLabelsColumn = new VBox(10);
-        queueLabelsColumn.getChildren().add(nbClientFileLabel);
-        queueLabelsColumn.getChildren().add(tmpsAttFileLabel);
-        // Column 4
-        VBox queueFieldsColumn = new VBox(10);
-        queueFieldsColumn.getChildren().add(nbClientFileField);
-        queueFieldsColumn.getChildren().add(tmpsAttFileField);
-        // Horizontal box that contains the columns
-        HBox resultContent = new HBox(20);
-        resultContent.getChildren().add(systemLabelsColumn);
-        resultContent.getChildren().add(systemFieldsColumn);
-        resultContent.getChildren().add(queueLabelsColumn);
-        resultContent.getChildren().add(queueFieldsColumn);
-        resultPane.setContent(resultContent);
-
-        root.add(paramPane, 0, 0, 2, 4);
-        root.add(resultPane, 0, 4, 4, 3);
+        root.add(initTitledPaneParametres(), 0, 0, 2, 4);
+        root.add(initTitledPaneResultats(), 0, 4, 4, 3);
+        root.add(initTitledPaneGraphiques(), 0, 7, 4, 3);
 
         // Set the horizontal spacing to 15px
         root.setHgap(15);
@@ -170,35 +120,126 @@ public class MM1Parameter extends Stage {
 
     }
 
+    private TitledPane initTitledPaneParametres() {
+        // TitledPane "Paramètres"
+        paramPane = new TitledPane();
+        paramPane.setText("Paramètres");
+        // Content for TitledPane "Paramètres"
+        // This pane has 2 columns like this:
+        // -----------------
+        // |  Label  | Field |
+        // |  Label  | Field |
+        // |  Button |
+        // -----------------
+        // This way, we make sure that everything is perfectly aligned
+        // Column 1
+        VBox labelsColumn = new VBox(10);
+        labelsColumn.getChildren().add(lambdaLabel);
+        labelsColumn.getChildren().add(muLabel);
+        // Column 2
+        VBox fieldsColumn = new VBox(10);
+        fieldsColumn.getChildren().add(lambdaField);
+        fieldsColumn.getChildren().add(muField);
+        // Horizontal box that contains the columns
+        HBox paramContent = new HBox(20);
+        paramContent.getChildren().add(labelsColumn);
+        paramContent.getChildren().add(fieldsColumn);
+        paramContent.getChildren().add(validateButton);
+        paramPane.setContent(paramContent);
+
+        return paramPane;
+    }
+
+    private TitledPane initTitledPaneResultats() {
+        // TitledPane "Résultats"
+        resultPane = new TitledPane();
+        resultPane.setText("Résultats");
+        // Content for TitledPane "Résultats"
+        // This pane has 4 columns like this:
+        // ---------------------------------
+        // | Label | Field | Label | Field |
+        // | Label | Field | Label | Field |
+        // ---------------------------------
+        // This way, we make sure that everything is perfectly aligned
+        // Column 1
+        VBox systemLabelsColumn = new VBox(10);
+        systemLabelsColumn.getChildren().add(nbClientSysLabel);
+        systemLabelsColumn.getChildren().add(tmpsAttSysLabel);
+        // Column 2
+        VBox systemFieldsColumn = new VBox(10);
+        systemFieldsColumn.getChildren().add(nbClientSysField);
+        systemFieldsColumn.getChildren().add(tmpsAttSysField);
+        // Column 3
+        VBox queueLabelsColumn = new VBox(10);
+        queueLabelsColumn.getChildren().add(nbClientFileLabel);
+        queueLabelsColumn.getChildren().add(tmpsAttFileLabel);
+        // Column 4
+        VBox queueFieldsColumn = new VBox(10);
+        queueFieldsColumn.getChildren().add(nbClientFileField);
+        queueFieldsColumn.getChildren().add(tmpsAttFileField);
+        // Horizontal box that contains the columns
+        HBox resultContent = new HBox(20);
+        resultContent.getChildren().add(systemLabelsColumn);
+        resultContent.getChildren().add(systemFieldsColumn);
+        resultContent.getChildren().add(queueLabelsColumn);
+        resultContent.getChildren().add(queueFieldsColumn);
+        resultPane.setContent(resultContent);
+
+        return resultPane;
+    }
+
+    public TitledPane initTitledPaneGraphiques() {
+        // TitledPane "Graphiques"
+        graphsPane = new TitledPane();
+        graphsPane.setText("Graphiques");
+        // Content for TitledPane "Graphiques"
+        // Horizontal box that contains the graphs
+        HBox graphsContent = new HBox(20);
+
+        graphsContent.getChildren().add(customerProbabilitiesChart);
+        //graphsContent.getChildren().add();
+        graphsPane.setContent(graphsContent);
+
+        return graphsPane;
+    }
+
+    private void initNbCustomerProbabilitiesChart() {
+        //Defining X axis
+        NumberAxis xAxis = new NumberAxis(0, 10, 1);
+        xAxis.setLabel("Nombre de clients");
+        //Defining y axis
+        NumberAxis yAxis = new NumberAxis(0, 100, 10);
+        yAxis.setLabel("% de d'avoir X clients");
+        customerProbabilitiesChart = new LineChart(xAxis, yAxis);
+    }
+
+    private void setDataCustomerProbCharts(List<FloatProperty> customerProbabilities) {
+        // Recreate the graph with proper upper bound value
+        int nbProb = customerProbabilities.size();
+        //Defining X axis
+        NumberAxis xAxis = new NumberAxis(0, nbProb, 1);
+        xAxis.setLabel("Nombre de clients");
+        //Defining y axis
+        NumberAxis yAxis = new NumberAxis(0, 100, 10);
+        yAxis.setLabel("% de d'avoir X clients");
+        customerProbabilitiesChart = new LineChart(xAxis, yAxis);
+
+        // Define data
+        XYChart.Series series = new XYChart.Series();
+        for(int i = 0; i<nbProb; i++) {
+            series.getData().add(new XYChart.Data(i, customerProbabilities.get(i).getValue()*100));
+        }
+
+        //Setting the data to Line chart
+        customerProbabilitiesChart.getData().add(series);
+    }
+
     private void bindResultatLabel(MM1 mm1) {
         System.out.println("mm1.getMeanTimeInSystem().getValue() = " + mm1.getMeanTimeInSystem().getValue());
         tmpsAttSysField.textProperty().bind(mm1.getMeanTimeInSystem().asString());
         tmpsAttFileField.textProperty().bind(mm1.getMeanTimeInQueue().asString());
         nbClientFileField.textProperty().bind(mm1.getNbCustInQueue().asString());
         nbClientSysField.textProperty().bind(mm1.getNbCustInSystem().asString());
-    }
-
-    private void updateResults(){
-
-        GridPane root = new GridPane();
-
-        root.addRow(1, lambdaLabel,lambdaField);
-        root.addRow(2, muLabel,muField);
-        root.addRow(3, new Label(""), validateButton);
-        root.addRow(4, resultatLabel);
-        root.addRow(5, nbClientSysLabel, nbClientSysField, nbClientFileLabel, nbClientFileField);
-        root.addRow(6, tmpsAttSysLabel, tmpsAttSysField, tmpsAttFileLabel, tmpsAttFileField);
-
-        // Set the horizontal spacing to 15px
-        root.setHgap(15);
-        // Set the vertical spacing to 25px
-        root.setVgap(25);
-
-        root.setStyle("-fx-padding: 15;" );
-
-        Scene scene = new Scene(root);
-
-        stage.setScene(scene);
     }
 
     private void setValidateButton(){
@@ -222,10 +263,13 @@ public class MM1Parameter extends Stage {
                     alert.showAndWait();
                     return;
                 }
+                mm1.computeRho();
                 mm1.computeMeanTimeInSystem();
                 mm1.computeMeanTimeInQueue();
                 mm1.computeNbCustomerInQueue();
                 mm1.computeNbCustomerInSystem();
+                mm1.computeNbCustomerProbabilities();
+                setDataCustomerProbCharts(mm1.getProbabilityOfStates());
                 bindResultatLabel(mm1);
 
             }
