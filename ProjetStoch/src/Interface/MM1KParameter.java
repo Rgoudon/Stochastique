@@ -1,5 +1,6 @@
 package Interface;
 
+import javafx.beans.property.FloatProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -36,18 +37,19 @@ public class MM1KParameter extends Stage {
     private Label tmpsAttSysLabel;
     private Label tmpsAttFileLabel;
 
-    private Label nbClientSys;
-    private Label nbClientFile;
-    private Label tmpsAttSys;
-    private Label tmpsAttFile;
+    private Label nbClientSysField = new Label();
+    private Label nbClientFileField = new Label();
+    private Label tmpsAttSysField = new Label();
+    private Label tmpsAttFileField = new Label();
 
+    private MM1K mm1k = new MM1K(1);
 
     private Button validateButton;
 
     public void init(){
 
         stage = this;
-        setResultatLabel(0,0,0,0);
+        //setResultatLabel(0,0,0,0);
         setWindow();
         stage.show();
     }
@@ -62,7 +64,7 @@ public class MM1KParameter extends Stage {
 
         setLambda();
         setMu();
-        setS();
+        setK();
         setFixedLabel();
         setValidateButton();
         GridPane root = new GridPane();
@@ -87,7 +89,7 @@ public class MM1KParameter extends Stage {
         VBox fieldsColumn = new VBox(10);
         fieldsColumn.getChildren().add(lambdaField);
         fieldsColumn.getChildren().add(muField);
-        fieldsColumn.getChildren().add(kLabel);
+        fieldsColumn.getChildren().add(kField);
         // Horizontal box that contains the columns
         HBox paramContent = new HBox(20);
         paramContent.getChildren().add(labelsColumn);
@@ -111,16 +113,16 @@ public class MM1KParameter extends Stage {
         systemLabelsColumn.getChildren().add(tmpsAttSysLabel);
         // Column 2
         VBox systemFieldsColumn = new VBox(10);
-        systemFieldsColumn.getChildren().add(nbClientSys);
-        systemFieldsColumn.getChildren().add(tmpsAttSys);
+        systemFieldsColumn.getChildren().add(nbClientSysField);
+        systemFieldsColumn.getChildren().add(tmpsAttSysField);
         // Column 3
         VBox queueLabelsColumn = new VBox(10);
         queueLabelsColumn.getChildren().add(nbClientFileLabel);
         queueLabelsColumn.getChildren().add(tmpsAttFileLabel);
         // Column 4
         VBox queueFieldsColumn = new VBox(10);
-        queueFieldsColumn.getChildren().add(nbClientFile);
-        queueFieldsColumn.getChildren().add(tmpsAttFile);
+        queueFieldsColumn.getChildren().add(nbClientFileField);
+        queueFieldsColumn.getChildren().add(tmpsAttFileField);
         // Horizontal box that contains the columns
         HBox resultContent = new HBox(20);
         resultContent.getChildren().add(systemLabelsColumn);
@@ -161,7 +163,7 @@ public class MM1KParameter extends Stage {
         muField.setPrefWidth(100);
     }
 
-    private void setS(){
+    private void setK(){
 
         kLabel = new Label("K");
 
@@ -173,19 +175,27 @@ public class MM1KParameter extends Stage {
 
     private void setFixedLabel(){
         resultatLabel = new Label("Résultat des calculs");
-        tmpsAttSysLabel = new Label("Attente moyenne dans le système");
-        tmpsAttFileLabel = new Label("Attente moyenne dans la file");
-        nbClientFileLabel = new Label("Nombre moyen de client dans la file");
-        nbClientSysLabel = new Label("Nombre moyen de client dans le système");
+        tmpsAttSysLabel = new Label("Attente moyenne dans le système : ");
+        tmpsAttFileLabel = new Label("Attente moyenne dans la file : ");
+        nbClientFileLabel = new Label("Nombre moyen de client dans la file : ");
+        nbClientSysLabel = new Label("Nombre moyen de client dans le système : ");
 
     }
 
-    private void setResultatLabel(float attenteFile , float attenteSys , float clientFile, float clientSys) {
+    private void setResultatLabel(FloatProperty attenteFile , FloatProperty attenteSys , FloatProperty clientFile, FloatProperty clientSys) {
 
-        tmpsAttSys = new Label(Float.toString(attenteSys));
+        /*tmpsAttSys = new Label(Float.toString(attenteSys));
         tmpsAttFile = new Label(Float.toString(attenteFile));
         nbClientFile = new Label(Float.toString(clientFile));
-        nbClientSys = new Label(Float.toString(clientSys));
+        nbClientSys = new Label(Float.toString(clientSys));*/
+    }
+
+    private void bindResultatLabel(MM1K mm1k) {
+        System.out.println("mm1.getMeanTimeInSystem().getValue() = " + mm1k.getMeanTimeInSystem().getValue());
+        tmpsAttSysField.textProperty().bind(mm1k.getMeanTimeInSystem().asString());
+        tmpsAttFileField.textProperty().bind(mm1k.getMeanTimeInQueue().asString());
+        nbClientFileField.textProperty().bind(mm1k.getNbCustInQueue().asString());
+        nbClientSysField.textProperty().bind(mm1k.getNbCustInSystem().asString());
     }
 
     private void updateResults(){
@@ -197,8 +207,8 @@ public class MM1KParameter extends Stage {
         root.addRow(3, kLabel,kField);
         root.addRow(4, new Label(""), validateButton);
         root.addRow(5, resultatLabel);
-        root.addRow(6, nbClientSysLabel,nbClientSys, nbClientFileLabel,nbClientFile);
-        root.addRow(7, tmpsAttSysLabel,tmpsAttSys, tmpsAttFileLabel,tmpsAttFile);
+        root.addRow(6, nbClientSysLabel, nbClientSysField, nbClientFileLabel, nbClientFileField);
+        root.addRow(7, tmpsAttSysLabel, tmpsAttSysField, tmpsAttFileLabel, tmpsAttFileField);
 
         // Set the horizontal spacing to 15px
         root.setHgap(15);
@@ -220,13 +230,15 @@ public class MM1KParameter extends Stage {
         validateButton.setOnAction( new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                MM1K formules = new MM1K(Integer.parseInt(kField.getText()));
-                formules.setLambda(Float.parseFloat(lambdaField.getText()));
-                formules.setMu(Float.parseFloat(muField.getText()));
-                formules.computeRho();
-                setResultatLabel(formules.computeMeanTimeInQueue(),formules.computeMeanTimeInSystem(),
-                        formules.computeNbCustomerInQueue(),formules.computeNbCustomerInSystem());
-                updateResults();
+                mm1k.getLambda().setValue(Float.parseFloat(lambdaField.textProperty().getValue()));
+                mm1k.getMu().setValue(Float.parseFloat(muField.textProperty().getValue()));
+                mm1k.getMaxCust().setValue(Integer.parseInt(kField.textProperty().getValue()));
+                mm1k.computeRho();
+                mm1k.computeMeanTimeInSystem();
+                mm1k.computeMeanTimeInQueue();
+                mm1k.computeNbCustomerInQueue();
+                mm1k.computeNbCustomerInSystem();
+                bindResultatLabel(mm1k);
 
             }
         });

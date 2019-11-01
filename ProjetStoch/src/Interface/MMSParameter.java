@@ -35,13 +35,14 @@ public class MMSParameter extends Stage{
     private Label tmpsAttSysLabel;
     private Label tmpsAttFileLabel;
 
-    private Label nbClientSys;
-    private Label nbClientFile;
-    private Label tmpsAttSys;
-    private Label tmpsAttFile;
+    private Label nbClientSysField = new Label();
+    private Label nbClientFileField = new Label();
+    private Label tmpsAttSysField = new Label();
+    private Label tmpsAttFileField = new Label();
+
+    private MMS mms = new MMS(2);
 
     private Button validateButton;
-
 
 
     public void init(){
@@ -111,16 +112,16 @@ public class MMSParameter extends Stage{
         systemLabelsColumn.getChildren().add(tmpsAttSysLabel);
         // Column 2
         VBox systemFieldsColumn = new VBox(10);
-        systemFieldsColumn.getChildren().add(nbClientSys);
-        systemFieldsColumn.getChildren().add(tmpsAttSys);
+        systemFieldsColumn.getChildren().add(nbClientSysField);
+        systemFieldsColumn.getChildren().add(tmpsAttSysField);
         // Column 3
         VBox queueLabelsColumn = new VBox(10);
         queueLabelsColumn.getChildren().add(nbClientFileLabel);
         queueLabelsColumn.getChildren().add(tmpsAttFileLabel);
         // Column 4
         VBox queueFieldsColumn = new VBox(10);
-        queueFieldsColumn.getChildren().add(nbClientFile);
-        queueFieldsColumn.getChildren().add(tmpsAttFile);
+        queueFieldsColumn.getChildren().add(nbClientFileField);
+        queueFieldsColumn.getChildren().add(tmpsAttFileField);
         // Horizontal box that contains the columns
         HBox resultContent = new HBox(20);
         resultContent.getChildren().add(systemLabelsColumn);
@@ -182,12 +183,19 @@ public class MMSParameter extends Stage{
 
     private void setResultatLabel(float attenteFile , float attenteSys , float clientFile, float clientSys) {
 
-        tmpsAttSys = new Label(Float.toString(attenteSys));
-        tmpsAttFile = new Label(Float.toString(attenteFile));
-        nbClientFile = new Label(Float.toString(clientFile));
-        nbClientSys = new Label(Float.toString(clientSys));
+        tmpsAttSysField = new Label(Float.toString(attenteSys));
+        tmpsAttFileField = new Label(Float.toString(attenteFile));
+        nbClientFileField = new Label(Float.toString(clientFile));
+        nbClientSysField = new Label(Float.toString(clientSys));
     }
 
+    private void bindResultatLabel(MMS mms) {
+        System.out.println("mm1.getMeanTimeInSystem().getValue() = " + mms.getMeanTimeInSystem().getValue());
+        tmpsAttSysField.textProperty().bind(mms.getMeanTimeInSystem().asString());
+        tmpsAttFileField.textProperty().bind(mms.getMeanTimeInQueue().asString());
+        nbClientFileField.textProperty().bind(mms.getNbCustInQueue().asString());
+        nbClientSysField.textProperty().bind(mms.getNbCustInSystem().asString());
+    }
     private void updateResults(){
 
         GridPane root = new GridPane();
@@ -197,8 +205,8 @@ public class MMSParameter extends Stage{
         root.addRow(3,sLabel,sField);
         root.addRow(4, new Label(""), validateButton);
         root.addRow(5, resultatLabel);
-        root.addRow(6, nbClientSysLabel,nbClientSys, nbClientFileLabel,nbClientFile);
-        root.addRow(7, tmpsAttSysLabel,tmpsAttSys, tmpsAttFileLabel,tmpsAttFile);
+        root.addRow(6, nbClientSysLabel,nbClientSysField, nbClientFileLabel, nbClientFileField);
+        root.addRow(7, tmpsAttSysLabel, tmpsAttSysField, tmpsAttFileLabel, tmpsAttFileField);
 
         // Set the horizontal spacing to 15px
         root.setHgap(15);
@@ -220,14 +228,15 @@ public class MMSParameter extends Stage{
         validateButton.setOnAction( new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-
-                MMS formules = new MMS(Integer.parseInt(sField.getText()));
-                formules.setLambda(Float.parseFloat(lambdaField.getText()));
-                formules.setMu(Float.parseFloat(muField.getText()));
-                formules.computeRho();
-                setResultatLabel(formules.computeMeanTimeInQueue(),formules.computeMeanTimeInSystem(),
-                        formules.computeNbCustomerInQueue(),formules.computeNbCustomerInSystem());
-                updateResults();
+                mms.getLambda().setValue(Float.parseFloat(lambdaField.textProperty().getValue()));
+                mms.getMu().setValue(Float.parseFloat(muField.textProperty().getValue()));
+                mms.getNbServer().setValue(Integer.parseInt(sField.textProperty().getValue()));
+                mms.computeRho();
+                mms.computeMeanTimeInSystem();
+                mms.computeMeanTimeInQueue();
+                mms.computeNbCustomerInQueue();
+                mms.computeNbCustomerInSystem();
+                bindResultatLabel(mms);
             }
         });
     }
