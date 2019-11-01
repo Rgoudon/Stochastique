@@ -34,7 +34,7 @@ public class MM1K extends FileAttente {
     }
 
     public FloatProperty computeNbCustomerInQueue() {
-        Lq.setValue((float) computeNbCustomerInSystem().getValue() - (1 - computeNbCustomerProbabilities(0).get(0).getValue()));
+        Lq.setValue((float) computeNbCustomerInSystem().getValue() - (1 - computeNbCustomerProbabilities().get(0).getValue()));
         return Lq;
     }
 
@@ -53,7 +53,8 @@ public class MM1K extends FileAttente {
      *  Compute the probabilities of having i customer in the system, i being the index of the list
      * @return the list of probabilities
      */
-    public List<FloatProperty> computeNbCustomerProbabilities(int max) {
+    public List<FloatProperty> computeNbCustomerProbabilities() {
+        int max = 10 * (int) Math.ceil(lambda.getValue());
         q = new ArrayList<FloatProperty>();
         // Calcul de q
         if (rho.getValue() == 1) {
