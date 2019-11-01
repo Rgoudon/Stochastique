@@ -239,6 +239,8 @@ public class MMSParameter extends Stage{
                     alert.showAndWait();
                     return;
                 }
+                mms.computeR(10);
+                mms.computeNbCustomerProbabilities();
                 mms.computeMeanTimeInSystem();
                 mms.computeMeanTimeInQueue();
                 mms.computeNbCustomerInQueue();
