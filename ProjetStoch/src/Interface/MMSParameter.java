@@ -3,10 +3,7 @@ package Interface;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -231,7 +228,17 @@ public class MMSParameter extends Stage{
                 mms.getLambda().setValue(Float.parseFloat(lambdaField.textProperty().getValue()));
                 mms.getMu().setValue(Float.parseFloat(muField.textProperty().getValue()));
                 mms.getNbServer().setValue(Integer.parseInt(sField.textProperty().getValue()));
-                mms.computeRho();
+                try {
+                    mms.computeRho();
+                }
+                catch (ArithmeticException ae) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erreur");
+                    alert.setHeaderText("Oups!");
+                    alert.setContentText(ae.getMessage());
+                    alert.showAndWait();
+                    return;
+                }
                 mms.computeMeanTimeInSystem();
                 mms.computeMeanTimeInQueue();
                 mms.computeNbCustomerInQueue();
