@@ -236,11 +236,11 @@ public class MM1Parameter extends Stage {
     private void initNbCustomerProbabilitiesChart() {
         //Defining X axis
         CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Nombre de clients");
+        xAxis.setLabel("X");
         xAxis.setAutoRanging(true);
         //Defining y axis
         NumberAxis yAxis = new NumberAxis(0, 100, 10);
-        yAxis.setLabel("% de d'avoir X clients");
+        yAxis.setLabel("%");
         yAxis.setAutoRanging(true);
         customerProbabilitiesChart = new BarChart(xAxis, yAxis);
     }
