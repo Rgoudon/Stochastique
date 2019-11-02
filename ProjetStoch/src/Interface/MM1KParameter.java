@@ -1,6 +1,7 @@
 package Interface;
 
 import javafx.beans.property.FloatProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -8,10 +9,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -32,10 +30,12 @@ public class MM1KParameter extends Stage {
     private TextField lambdaField;
     private TextField muField;
     private TextField kField;
+    private ComboBox timeUnitCombo;
 
     private Label lambdaLabel;
     private Label muLabel;
     private Label kLabel;
+    private Label timeUnitLabel;
 
     private Label resultatLabel;
 
@@ -71,10 +71,11 @@ public class MM1KParameter extends Stage {
         stage.setWidth(800);
         stage.setTitle("Calculateur file d'attente");
 
-        setLambda();
-        setMu();
-        setK();
-        setFixedLabel();
+        initLambda();
+        initMu();
+        initK();
+        initTimeUnits();
+        initFixedLabel();
         setValidateButton();
         GridPane root = new GridPane();
 
@@ -96,7 +97,7 @@ public class MM1KParameter extends Stage {
         stage.setScene(scene);
     }
 
-    private void setLambda(){
+    private void initLambda(){
 
         lambdaLabel = new Label("lambda");
 
@@ -105,7 +106,7 @@ public class MM1KParameter extends Stage {
         lambdaField.setPrefWidth(100);
     }
 
-    private void setMu(){
+    private void initMu(){
         muLabel = new Label("mu");
 
         muField = new TextField("1");
@@ -113,7 +114,13 @@ public class MM1KParameter extends Stage {
         muField.setPrefWidth(100);
     }
 
-    private void setK(){
+    private void initTimeUnits() {
+        timeUnitLabel = new Label("Unité de temps");
+        String timeUnits[] = { "Milliseconde", "Seconde", "Minute", "Heure"};
+        timeUnitCombo = new ComboBox(FXCollections.observableArrayList(timeUnits));
+    }
+
+    private void initK(){
 
         kLabel = new Label("K");
 
@@ -123,7 +130,7 @@ public class MM1KParameter extends Stage {
 
     }
 
-    private void setFixedLabel(){
+    private void initFixedLabel(){
         resultatLabel = new Label("Résultat des calculs");
         tmpsAttSysLabel = new Label("Attente moyenne dans le système : ");
         tmpsAttFileLabel = new Label("Attente moyenne dans la file : ");
@@ -150,11 +157,13 @@ public class MM1KParameter extends Stage {
         labelsColumn.getChildren().add(lambdaLabel);
         labelsColumn.getChildren().add(muLabel);
         labelsColumn.getChildren().add(kLabel);
+        labelsColumn.getChildren().add(timeUnitLabel);
         // Column 2
         VBox fieldsColumn = new VBox(10);
         fieldsColumn.getChildren().add(lambdaField);
         fieldsColumn.getChildren().add(muField);
         fieldsColumn.getChildren().add(kField);
+        fieldsColumn.getChildren().add(timeUnitCombo);
         // Horizontal box that contains the columns
         HBox paramContent = new HBox(20);
         paramContent.getChildren().add(labelsColumn);
@@ -244,9 +253,8 @@ public class MM1KParameter extends Stage {
     }
 
     private void bindResultatLabel(MM1K mm1k) {
-        System.out.println("mm1.getMeanTimeInSystem().getValue() = " + mm1k.getMeanTimeInSystem().getValue());
-        tmpsAttSysField.textProperty().bind(mm1k.getMeanTimeInSystem().asString());
-        tmpsAttFileField.textProperty().bind(mm1k.getMeanTimeInQueue().asString());
+        tmpsAttSysField.textProperty().bind(mm1k.getMeanTimeInSystem());
+        tmpsAttFileField.textProperty().bind(mm1k.getMeanTimeInQueue());
         nbClientFileField.textProperty().bind(mm1k.getNbCustInQueue().asString());
         nbClientSysField.textProperty().bind(mm1k.getNbCustInSystem().asString());
     }
@@ -262,6 +270,7 @@ public class MM1KParameter extends Stage {
                 mm1k.getLambda().setValue(Float.parseFloat(lambdaField.textProperty().getValue()));
                 mm1k.getMu().setValue(Float.parseFloat(muField.textProperty().getValue()));
                 mm1k.getMaxCust().setValue(Integer.parseInt(kField.textProperty().getValue()));
+                mm1k.getTimeUnit().setValue(timeUnitCombo.getValue().toString());
                 mm1k.computeRho();
                 mm1k.computeMeanTimeInSystem();
                 mm1k.computeMeanTimeInQueue();
