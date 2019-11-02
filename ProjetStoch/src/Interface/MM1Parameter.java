@@ -260,7 +260,6 @@ public class MM1Parameter extends Stage {
                 mm1.computeNbCustomerInSystem();
                 mm1.computeNbCustomerProbabilities();
                 setDataCustomerProbCharts(mm1.getProbabilityOfStates());
-                System.out.println(customerProbabilitiesChart.getData().get(0).toString());
                 bindResultatLabel(mm1);
 
             }
