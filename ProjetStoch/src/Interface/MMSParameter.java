@@ -16,7 +16,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.MMS;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 public class MMSParameter extends Stage{
 
@@ -270,6 +272,18 @@ public class MMSParameter extends Stage{
         series.setName(title);
         for (int i = 0; i < data.size(); i++) {
             series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i+xLowerBound), data.get(i).getValue() * 100));
+        }
+        customerProbabilitiesChart.getData().clear();
+        //Setting the data to Line chart
+        customerProbabilitiesChart.getData().add(series);
+    }
+
+    private void setDataCharts(String title, TreeMap<Float, FloatProperty> data, int xLowerBound) {
+        // Define data
+        XYChart.Series series = new XYChart.Series();
+        series.setName(title);
+        for (float key : data.keySet()) {
+            series.getData().add(new XYChart.Data<String, Float>(String.valueOf(key), data.get(key).getValue() * 100));
         }
         customerProbabilitiesChart.getData().clear();
         //Setting the data to Line chart
