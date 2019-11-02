@@ -264,10 +264,10 @@ public class MMSParameter extends Stage{
         customerProbabilitiesChart = new BarChart(xAxis, yAxis);
     }
 
-    private void setDataCharts(List<FloatProperty> data) {
+    private void setDataCharts(String title, List<FloatProperty> data) {
         // Define data
         XYChart.Series series = new XYChart.Series();
-        series.setName("Nombre de clients dans le système");
+        series.setName(title);
         for (int i = 0; i < data.size(); i++) {
             series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i), data.get(i).getValue() * 100));
         }
@@ -336,10 +336,10 @@ public class MMSParameter extends Stage{
                 mms.computeNbCustomerInQueue();
                 mms.computeNbCustomerInSystem();
                 if (nbCustomerProbRadioButton.isSelected()) {
-                    setDataCharts(mms.getProbabilityOfStates());
+                    setDataCharts("Probabilités en fonction du nombre de client", mms.getProbabilityOfStates());
                 }
                 else if (timeSpentProbRadioButton.isSelected()) {
-                    setDataCharts(mms.getWaitingTimeProbabilities());
+                    setDataCharts("Probabilités en fonction du temps d'attente", mms.getWaitingTimeProbabilities());
                 }
                 bindResultatLabel(mms);
             }
