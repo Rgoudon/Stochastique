@@ -69,4 +69,17 @@ public class MM1K extends FileAttente {
         }
         return q;
     }
+
+    /**
+     * Compute the probabilities for a person to stay longer than a time t (in unit of time)
+     * @return List<FloatProperty>
+     */
+    public List<FloatProperty> computeWaitingTimeProbabilities() {
+        int max = (int) Math.ceil(lambda.getValue() * 5);
+        w.clear();
+        for(int i=1; i<max; i++) {
+            w.add(new SimpleFloatProperty((float) Math.exp(-mu.getValue()*(1 - rho.getValue())*i)));
+        }
+        return w;
+    }
 }

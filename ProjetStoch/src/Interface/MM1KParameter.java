@@ -294,6 +294,7 @@ public class MM1KParameter extends Stage {
                 mm1k.computeNbCustomerInQueue();
                 mm1k.computeNbCustomerInSystem();
                 mm1k.computeNbCustomerProbabilities();
+                mm1k.computeWaitingTimeProbabilities();
                 if (nbCustomerProbRadioButton.isSelected()) {
                     setDataCharts("Probabilités qu'il y ait X clients dans le système", mm1k.getProbabilityOfStates(), 0);
                 }

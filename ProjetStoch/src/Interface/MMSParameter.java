@@ -335,6 +335,7 @@ public class MMSParameter extends Stage{
                 mms.computeMeanTimeInQueue();
                 mms.computeNbCustomerInQueue();
                 mms.computeNbCustomerInSystem();
+                mms.computeWaitingTimeProbabilities(timeUnitCombo.getValue().toString());
                 if (nbCustomerProbRadioButton.isSelected()) {
                     setDataCharts("Probabilités en fonction du nombre de client", mms.getProbabilityOfStates(), 0);
                 }

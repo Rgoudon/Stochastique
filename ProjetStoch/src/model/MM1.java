@@ -57,11 +57,15 @@ public class MM1 extends FileAttente {
     }
 
     /**
-     * Compute the probability for a person to stay longer than a time t (in unit of time)
-     * @param t
-     * @return Float
+     * Compute the probabilities for a person to stay longer than a time t (in unit of time)
+     * @return List<FloatProperty>
      */
-    public Float computeProbabilityOfStayingInSystem(int t) {
-        return (float) Math.exp(-mu.getValue()*(1 - rho.getValue())*t);
+    public List<FloatProperty> computeWaitingTimeProbabilities() {
+        int max = (int) Math.ceil(lambda.getValue() * 5);
+        w.clear();
+        for(int i=1; i<max; i++) {
+            w.add(new SimpleFloatProperty((float) Math.exp(-mu.getValue()*(1 - rho.getValue())*i)));
+        }
+        return w;
     }
 }
