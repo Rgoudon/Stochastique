@@ -4,9 +4,7 @@ import javafx.beans.property.FloatProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -44,7 +42,7 @@ public class MM1Parameter extends Stage {
     private Label tmpsAttSysField = new Label();
     private Label tmpsAttFileField = new Label();
 
-    private LineChart customerProbabilitiesChart ;
+    private BarChart customerProbabilitiesChart ;
 
     private MM1 mm1 = new MM1();
 
@@ -205,22 +203,23 @@ public class MM1Parameter extends Stage {
 
     private void initNbCustomerProbabilitiesChart() {
         //Defining X axis
-        NumberAxis xAxis = new NumberAxis(0, 10, 1);
+        CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Nombre de clients");
         xAxis.setAutoRanging(true);
         //Defining y axis
         NumberAxis yAxis = new NumberAxis(0, 100, 10);
         yAxis.setLabel("% de d'avoir X clients");
         yAxis.setAutoRanging(true);
-        customerProbabilitiesChart = new LineChart(xAxis, yAxis);
+        customerProbabilitiesChart = new BarChart(xAxis, yAxis);
     }
 
     private void setDataCustomerProbCharts(List<FloatProperty> customerProbabilities) {
         // Define data
         XYChart.Series series = new XYChart.Series();
         for(int i = 0; i<customerProbabilities.size(); i++) {
-            series.getData().add(new XYChart.Data<Integer, Float>(i, customerProbabilities.get(i).getValue()*100));
+            series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i), customerProbabilities.get(i).getValue()*100));
         }
+        customerProbabilitiesChart.getData().clear();
         //Setting the data to Line chart
         customerProbabilitiesChart.getData().add(series);
     }
