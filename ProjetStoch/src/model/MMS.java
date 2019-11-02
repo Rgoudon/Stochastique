@@ -5,6 +5,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleFloatProperty;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MMS extends FileAttente {
@@ -117,29 +118,12 @@ public class MMS extends FileAttente {
      * Compute the probabilities for a person to stay longer than a time t (in unit of time)
      * @return List<FloatProperty>
      */
-    public List<FloatProperty> computeWaitingTimeProbabilities(String timeunit) {
+    public HashMap<Float, FloatProperty> computeWaitingTimeProbabilities(String timeunit) {
         double t;
-        double incr = 0;
-        switch (timeunit) {
-            case "Milliseconde":
-                incr = 10;
-                break;
-            case "Seconde":
-                incr = 0.01;
-                break;
-            case "Minute":
-                incr = 0.01;
-                break;
-            case "Heure":
-                incr = 0.1;
-                break;
-            default :
-                incr = 1;
-        }
-        float max = (float) Math.ceil(lambda.getValue() * 2);
+        double incr = 0.1;
         w.clear();
-        for(t=0; t<max; t=t+incr) {
-            w.add(new SimpleFloatProperty((float) (Math.exp(-mu.getValue() * t)
+        for(t=0; t<1; t=t+incr) {
+            w.put((float) t, new SimpleFloatProperty((float) (Math.exp(-mu.getValue() * t)
                                                     * (1 + (q.get(0).getValue()*(Math.pow(rho.getValue()*S.getValue(), S.getValue())))
                                                             /(Utils.fact(S.getValue())*(1-rho.getValue()))
                                                     * (1 - Math.exp(-mu.getValue()*t*(S.getValue()-1-rho.getValue()*S.getValue())))

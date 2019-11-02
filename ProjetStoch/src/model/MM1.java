@@ -4,6 +4,7 @@ import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class MM1 extends FileAttente {
@@ -46,7 +47,7 @@ public class MM1 extends FileAttente {
      * @return the list of probabilities
      */
     public List<FloatProperty> computeNbCustomerProbabilities() {
-        int max = (int) Math.ceil(lambda.getValue() * 5);
+        int max = (int) Math.ceil(lambda.getValue() * 3);
         // Clear q
         q.clear();
         // Calcul de q
@@ -60,11 +61,11 @@ public class MM1 extends FileAttente {
      * Compute the probabilities for a person to stay longer than a time t (in unit of time)
      * @return List<FloatProperty>
      */
-    public List<FloatProperty> computeWaitingTimeProbabilities() {
+    public HashMap<Float, FloatProperty> computeWaitingTimeProbabilities() {
         int max = (int) Math.ceil(lambda.getValue() * 5);
         w.clear();
         for(int i=1; i<max; i++) {
-            w.add(new SimpleFloatProperty((float) Math.exp(-mu.getValue()*(1 - rho.getValue())*i)));
+            w.put((float) i, new SimpleFloatProperty((float) Math.exp(-mu.getValue()*(1 - rho.getValue())*i)));
         }
         return w;
     }
