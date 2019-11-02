@@ -29,7 +29,6 @@ public class MM1K extends FileAttente {
             L.setValue((float) (rho.getValue()*(1 - (K.getValue()+1)*Math.pow(rho.getValue(), K.getValue()) + K.getValue()*Math.pow(rho.getValue(), (K.getValue()+1)))/
                         ((1 - rho.getValue())*(1 - Math.pow(rho.getValue(),(K.getValue()+1))))));
         }
-        System.out.println("L = " + L.getValue());
         return this.L;
     }
 
@@ -40,12 +39,12 @@ public class MM1K extends FileAttente {
 
     public FloatProperty computeMeanTimeInSystem() {
 
-        W.setValue((float) computeNbCustomerInQueue().getValue()/lambda.getValue());
+        W.setValue((float) computeNbCustomerInSystem().getValue()/lambda.getValue());
         return W;
     }
 
     public FloatProperty computeMeanTimeInQueue() {
-        Wq.setValue((float) computeMeanTimeInSystem().getValue() - 1/mu.getValue());
+        Wq.setValue((float) computeMeanTimeInSystem().getValue() + 1/mu.getValue());
         return Wq;
     }
 
