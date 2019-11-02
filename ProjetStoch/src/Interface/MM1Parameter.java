@@ -121,6 +121,7 @@ public class MM1Parameter extends Stage {
     private TitledPane initTitledPaneParametres() {
         // TitledPane "Paramètres"
         paramPane = new TitledPane();
+        paramPane.setCollapsible(false);
         paramPane.setText("Paramètres");
         // Content for TitledPane "Paramètres"
         // This pane has 2 columns like this:
@@ -151,6 +152,7 @@ public class MM1Parameter extends Stage {
     private TitledPane initTitledPaneResultats() {
         // TitledPane "Résultats"
         resultPane = new TitledPane();
+        resultPane.setCollapsible(false);
         resultPane.setText("Résultats");
         // Content for TitledPane "Résultats"
         // This pane has 4 columns like this:
@@ -189,6 +191,7 @@ public class MM1Parameter extends Stage {
     public TitledPane initTitledPaneGraphiques() {
         // TitledPane "Graphiques"
         graphsPane = new TitledPane();
+        graphsPane.setCollapsible(false);
         graphsPane.setText("Graphiques");
         // Content for TitledPane "Graphiques"
         // Horizontal box that contains the graphs
