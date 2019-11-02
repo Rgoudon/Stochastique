@@ -264,12 +264,12 @@ public class MMSParameter extends Stage{
         customerProbabilitiesChart = new BarChart(xAxis, yAxis);
     }
 
-    private void setDataCharts(String title, List<FloatProperty> data) {
+    private void setDataCharts(String title, List<FloatProperty> data, int xLowerBound) {
         // Define data
         XYChart.Series series = new XYChart.Series();
         series.setName(title);
         for (int i = 0; i < data.size(); i++) {
-            series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i), data.get(i).getValue() * 100));
+            series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i+xLowerBound), data.get(i).getValue() * 100));
         }
         customerProbabilitiesChart.getData().clear();
         //Setting the data to Line chart
@@ -336,10 +336,10 @@ public class MMSParameter extends Stage{
                 mms.computeNbCustomerInQueue();
                 mms.computeNbCustomerInSystem();
                 if (nbCustomerProbRadioButton.isSelected()) {
-                    setDataCharts("Probabilités en fonction du nombre de client", mms.getProbabilityOfStates());
+                    setDataCharts("Probabilités en fonction du nombre de client", mms.getProbabilityOfStates(), 0);
                 }
                 else if (timeSpentProbRadioButton.isSelected()) {
-                    setDataCharts("Probabilités en fonction du temps d'attente", mms.getWaitingTimeProbabilities());
+                    setDataCharts("Probabilités en fonction du temps d'attente", mms.getWaitingTimeProbabilities(), 1);
                 }
                 bindResultatLabel(mms);
             }

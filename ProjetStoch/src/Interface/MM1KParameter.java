@@ -257,12 +257,12 @@ public class MM1KParameter extends Stage {
         customerProbabilitiesChart = new BarChart(xAxis, yAxis);
     }
 
-    private void setDataCharts(String title, List<FloatProperty> data) {
+    private void setDataCharts(String title, List<FloatProperty> data, int xLowerBound) {
         // Define data
         XYChart.Series series = new XYChart.Series();
         series.setName(title);
         for (int i = 0; i < data.size(); i++) {
-            series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i), data.get(i).getValue() * 100));
+            series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i+xLowerBound), data.get(i).getValue() * 100));
         }
         customerProbabilitiesChart.getData().clear();
         //Setting the data to Line chart
@@ -295,10 +295,10 @@ public class MM1KParameter extends Stage {
                 mm1k.computeNbCustomerInSystem();
                 mm1k.computeNbCustomerProbabilities();
                 if (nbCustomerProbRadioButton.isSelected()) {
-                    setDataCharts("Probabilités en fonction du nombre de client", mm1k.getProbabilityOfStates());
+                    setDataCharts("Probabilités qu'il y ait X clients dans le système", mm1k.getProbabilityOfStates(), 0);
                 }
                 else if (timeSpentProbRadioButton.isSelected()) {
-                    setDataCharts("Probabilités en fonction du temps d'attente", mm1k.getWaitingTimeProbabilities());
+                    setDataCharts("Probabilités d'attendre plus de X heures", mm1k.getWaitingTimeProbabilities(), 1);
                 }
                 bindResultatLabel(mm1k);
 

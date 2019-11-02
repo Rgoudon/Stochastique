@@ -243,12 +243,12 @@ public class MM1Parameter extends Stage {
         customerProbabilitiesChart = new BarChart(xAxis, yAxis);
     }
 
-    private void setDataCharts(String title, List<FloatProperty> data) {
+    private void setDataCharts(String title, List<FloatProperty> data, int xLowerBound) {
         // Define data
         XYChart.Series series = new XYChart.Series();
         series.setName(title);
         for (int i = 0; i < data.size(); i++) {
-            series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i), data.get(i).getValue() * 100));
+            series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i+xLowerBound), data.get(i).getValue() * 100));
         }
         customerProbabilitiesChart.getData().clear();
         //Setting the data to Line chart
@@ -291,11 +291,12 @@ public class MM1Parameter extends Stage {
                 mm1.computeNbCustomerInQueue();
                 mm1.computeNbCustomerInSystem();
                 mm1.computeNbCustomerProbabilities();
+                mm1.computeWaitingTimeProbabilities();
                 if (nbCustomerProbRadioButton.isSelected()) {
-                    setDataCharts("Probabilités en fonction du nombre de client", mm1.getProbabilityOfStates());
+                    setDataCharts("Probabilités en fonction du nombre de client", mm1.getProbabilityOfStates(), 0);
                 }
                 else if (timeSpentProbRadioButton.isSelected()) {
-                    setDataCharts("Probabilités en fonction du temps d'attente", mm1.getWaitingTimeProbabilities());
+                    setDataCharts("Probabilités en fonction du temps d'attente", mm1.getWaitingTimeProbabilities(), 1);
                 }
                 bindResultatLabel(mm1);
 
