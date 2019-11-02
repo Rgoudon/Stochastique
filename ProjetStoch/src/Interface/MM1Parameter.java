@@ -1,6 +1,8 @@
 package Interface;
 
 import javafx.beans.property.FloatProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -24,11 +26,11 @@ public class MM1Parameter extends Stage {
 
     private TextField lambdaField;
     private TextField muField;
-    private TextField uTimeField;
+    private ComboBox timeUnitCombo;
 
     private Label lambdaLabel;
     private Label muLabel;
-    private Label uTimeLabel;
+    private Label timeUnitLabel;
 
     private Label resultatLabel;
 
@@ -66,6 +68,7 @@ public class MM1Parameter extends Stage {
 
         initLambda();
         initMu();
+        initTimeUnits();
         setValidateButton();
         initFixedLabel();
 
@@ -109,13 +112,18 @@ public class MM1Parameter extends Stage {
         muField.setPrefWidth(100);
     }
 
+    private void initTimeUnits() {
+        timeUnitLabel = new Label("Unité de temps");
+        String timeUnits[] = { "Milliseconde", "Seconde", "Minute", "Heure"};
+        timeUnitCombo = new ComboBox(FXCollections.observableArrayList(timeUnits));
+    }
+
     private void initFixedLabel(){
         resultatLabel = new Label("Résultat des calculs");
         tmpsAttSysLabel = new Label("Attente moyenne dans le système : ");
         tmpsAttFileLabel = new Label("Attente moyenne dans la file : ");
         nbClientFileLabel = new Label("Nombre moyen de client dans la file : ");
         nbClientSysLabel = new Label("Nombre moyen de client dans le système : ");
-
     }
 
     private TitledPane initTitledPaneParametres() {
@@ -128,6 +136,7 @@ public class MM1Parameter extends Stage {
         // -----------------
         // |  Label  | Field |
         // |  Label  | Field |
+        // |  Label  | Combo |
         // |  Button |
         // -----------------
         // This way, we make sure that everything is perfectly aligned
@@ -135,10 +144,12 @@ public class MM1Parameter extends Stage {
         VBox labelsColumn = new VBox(10);
         labelsColumn.getChildren().add(lambdaLabel);
         labelsColumn.getChildren().add(muLabel);
+        labelsColumn.getChildren().add(timeUnitLabel);
         // Column 2
         VBox fieldsColumn = new VBox(10);
         fieldsColumn.getChildren().add(lambdaField);
         fieldsColumn.getChildren().add(muField);
+        fieldsColumn.getChildren().add(timeUnitCombo);
         // Horizontal box that contains the columns
         HBox paramContent = new HBox(20);
         paramContent.getChildren().add(labelsColumn);
@@ -229,8 +240,8 @@ public class MM1Parameter extends Stage {
 
     private void bindResultatLabel(MM1 mm1) {
         System.out.println("mm1.getMeanTimeInSystem().getValue() = " + mm1.getMeanTimeInSystem().getValue());
-        tmpsAttSysField.textProperty().bind(mm1.getMeanTimeInSystem().asString());
-        tmpsAttFileField.textProperty().bind(mm1.getMeanTimeInQueue().asString());
+        tmpsAttSysField.textProperty().bind(mm1.getMeanTimeInSystem());
+        tmpsAttFileField.textProperty().bind(mm1.getMeanTimeInQueue());
         nbClientFileField.textProperty().bind(mm1.getNbCustInQueue().asString());
         nbClientSysField.textProperty().bind(mm1.getNbCustInSystem().asString());
     }
@@ -245,6 +256,7 @@ public class MM1Parameter extends Stage {
             public void handle(ActionEvent e) {
                 mm1.getLambda().setValue(Float.parseFloat(lambdaField.textProperty().getValue()));
                 mm1.getMu().setValue(Float.parseFloat(muField.textProperty().getValue()));
+                mm1.getTimeUnit().setValue(timeUnitCombo.getValue().toString());
                 try {
                     mm1.computeRho();
                 }
