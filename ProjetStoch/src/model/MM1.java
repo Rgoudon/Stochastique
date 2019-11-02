@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 public class MM1 extends FileAttente {
 
@@ -61,7 +62,7 @@ public class MM1 extends FileAttente {
      * Compute the probabilities for a person to stay longer than a time t (in unit of time)
      * @return List<FloatProperty>
      */
-    public HashMap<Float, FloatProperty> computeWaitingTimeProbabilities() {
+    public TreeMap<Float, FloatProperty> computeWaitingTimeProbabilities() {
         int max = (int) Math.ceil(lambda.getValue() * 5);
         w.clear();
         for(int i=1; i<max; i++) {

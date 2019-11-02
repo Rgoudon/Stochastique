@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleFloatProperty;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 public class MMS extends FileAttente {
     private List<Float> r;      // Tableau utilisé pour calculer q0
@@ -74,7 +75,7 @@ public class MMS extends FileAttente {
      * @return the list of probabilities
      */
     public List<FloatProperty> computeNbCustomerProbabilities() {
-        int max = 5 * (int) Math.ceil(lambda.getValue());
+        int max = S.getValue() * 3;
         q = new ArrayList<FloatProperty>();
         // Calcul de q0
         Float q0 = (float) (1 / (getSumR() + Math.pow(rho.getValue()*S.getValue(), S.getValue())/(Utils.fact(S.getValue())*(1-rho.getValue()))));
@@ -118,11 +119,11 @@ public class MMS extends FileAttente {
      * Compute the probabilities for a person to stay longer than a time t (in unit of time)
      * @return List<FloatProperty>
      */
-    public HashMap<Float, FloatProperty> computeWaitingTimeProbabilities(String timeunit) {
+    public TreeMap<Float, FloatProperty> computeWaitingTimeProbabilities(String timeunit) {
         double t;
         double incr = 0.1;
         w.clear();
-        for(t=0; t<1; t=t+incr) {
+        for(t=incr; t<1; t=t+incr) {
             w.put((float) t, new SimpleFloatProperty((float) (Math.exp(-mu.getValue() * t)
                                                     * (1 + (q.get(0).getValue()*(Math.pow(rho.getValue()*S.getValue(), S.getValue())))
                                                             /(Utils.fact(S.getValue())*(1-rho.getValue()))

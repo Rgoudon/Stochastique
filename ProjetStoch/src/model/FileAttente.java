@@ -5,6 +5,7 @@ import javafx.beans.property.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 public class FileAttente {
     protected FloatProperty lambda = new SimpleFloatProperty(0);          // Nombre de clients par unité de temps
@@ -17,7 +18,7 @@ public class FileAttente {
     protected FloatProperty W = new SimpleFloatProperty(0);               // temps d'attente moyen dans le système
     protected FloatProperty Wq = new SimpleFloatProperty(0);              // temps d'attentee moyen dans la file
     protected List<FloatProperty> q = new ArrayList<>();                             // P(Xt=i) : probabilité qu'il y ai i clients
-    protected HashMap<Float, FloatProperty> w = new HashMap<>();                             // P(T>t) : probabilité d'attendre plus que i
+    protected TreeMap<Float, FloatProperty> w = new TreeMap<>();                             // P(T>t) : probabilité d'attendre plus que i
     protected StringProperty timeUnit = new SimpleStringProperty();                  // Unité de temps des calculs
 
     /*public void initTimeUnits() {
@@ -83,7 +84,7 @@ public class FileAttente {
         return q;
     }
 
-    public HashMap<Float, FloatProperty> getWaitingTimeProbabilities() {
+    public TreeMap<Float, FloatProperty> getWaitingTimeProbabilities() {
         return w;
     }
 
