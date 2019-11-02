@@ -33,6 +33,10 @@ public class MM1Parameter extends Stage {
     private Label muLabel;
     private Label timeUnitLabel;
 
+    private ToggleGroup radioButtonGroup;
+    private RadioButton nbCustomerProbRadioButton;
+    private RadioButton timeSpentProbRadioButton;
+
     private Label resultatLabel;
 
     private Label nbClientSysLabel;
@@ -70,6 +74,7 @@ public class MM1Parameter extends Stage {
         initLambda();
         initMu();
         initTimeUnits();
+        initRadioButtons();
         setValidateButton();
         initFixedLabel();
 
@@ -205,14 +210,25 @@ public class MM1Parameter extends Stage {
         graphsPane.setCollapsible(false);
         graphsPane.setText("Graphiques");
         // Content for TitledPane "Graphiques"
+        // Vertical box for the radio buttons
+        VBox radioButtonBox = new VBox(10);
+        radioButtonBox.getChildren().addAll(new Label("Choix du type de graphique :"), nbCustomerProbRadioButton, timeSpentProbRadioButton);
         // Horizontal box that contains the graphs
         HBox graphsContent = new HBox(20);
 
-        graphsContent.getChildren().add(customerProbabilitiesChart);
+        graphsContent.getChildren().addAll(customerProbabilitiesChart, radioButtonBox);
         //graphsContent.getChildren().add();
         graphsPane.setContent(graphsContent);
 
         return graphsPane;
+    }
+    private void initRadioButtons() {
+        radioButtonGroup = new ToggleGroup();
+        nbCustomerProbRadioButton = new RadioButton("Probabilité des quantités de clients");
+        nbCustomerProbRadioButton.setSelected(true);
+        nbCustomerProbRadioButton.setToggleGroup(radioButtonGroup);
+        timeSpentProbRadioButton = new RadioButton("Probabilité d'attente");
+        timeSpentProbRadioButton.setToggleGroup(radioButtonGroup);
     }
 
     private void initNbCustomerProbabilitiesChart() {
@@ -227,12 +243,12 @@ public class MM1Parameter extends Stage {
         customerProbabilitiesChart = new BarChart(xAxis, yAxis);
     }
 
-    private void setDataCustomerProbCharts(List<FloatProperty> customerProbabilities) {
+    private void setDataCharts(List<FloatProperty> data) {
         // Define data
         XYChart.Series series = new XYChart.Series();
         series.setName("Nombre de clients dans le système");
-        for(int i = 0; i<customerProbabilities.size(); i++) {
-            series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i), customerProbabilities.get(i).getValue()*100));
+        for (int i = 0; i < data.size(); i++) {
+            series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i), data.get(i).getValue() * 100));
         }
         customerProbabilitiesChart.getData().clear();
         //Setting the data to Line chart
@@ -275,7 +291,12 @@ public class MM1Parameter extends Stage {
                 mm1.computeNbCustomerInQueue();
                 mm1.computeNbCustomerInSystem();
                 mm1.computeNbCustomerProbabilities();
-                setDataCustomerProbCharts(mm1.getProbabilityOfStates());
+                if (nbCustomerProbRadioButton.isSelected()) {
+                    setDataCharts(mm1.getProbabilityOfStates());
+                }
+                else if (timeSpentProbRadioButton.isSelected()) {
+                    setDataCharts(mm1.getWaitingTimeProbabilities());
+                }
                 bindResultatLabel(mm1);
 
             }
