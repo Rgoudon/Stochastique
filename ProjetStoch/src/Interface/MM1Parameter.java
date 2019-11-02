@@ -94,7 +94,7 @@ public class MM1Parameter extends Stage {
 
     private void initLambda(){
 
-        lambdaLabel = new Label("lambda");
+        lambdaLabel = new Label("Nombre de clients entrant dans le système par unité de temps (λ)");
 
         lambdaField = new TextField("1");
         lambdaField.minWidth(10);
@@ -105,7 +105,7 @@ public class MM1Parameter extends Stage {
     }
 
     private void initMu(){
-        muLabel = new Label("mu");
+        muLabel = new Label("Nombre de clients quittant dans le système par unité de temps (μ)");
 
         muField = new TextField("1");
         muField.minWidth(10);
