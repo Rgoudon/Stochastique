@@ -67,8 +67,8 @@ public class MM1KParameter extends Stage {
 
         stage.setX(200);
         stage.setY(200);
-        stage.setHeight(500);
-        stage.setWidth(800);
+        stage.setHeight(800);
+        stage.setWidth(580);
         stage.setTitle("Calculateur file d'attente | File d'attente à serveur unique avec limite de clients finie");
 
         initLambda();
@@ -81,7 +81,7 @@ public class MM1KParameter extends Stage {
 
         initNbCustomerProbabilitiesChart();
 
-        root.add(initTitledPaneParametres(), 0, 0, 2, 4);
+        root.add(initTitledPaneParametres(), 0, 0, 4, 4);
         root.add(initTitledPaneResultats(), 0, 4, 4, 3);
         root.add(initTitledPaneGraphiques(), 0, 7, 4, 3);
 
@@ -99,7 +99,7 @@ public class MM1KParameter extends Stage {
 
     private void initLambda(){
 
-        lambdaLabel = new Label("Nombre de clients entrant dans le système par unité de temps (λ)");
+        lambdaLabel = new Label("Nombre de clients entrant par unité de temps (λ)");
 
         lambdaField = new TextField("1");
         lambdaField.minWidth(10);
@@ -107,7 +107,7 @@ public class MM1KParameter extends Stage {
     }
 
     private void initMu(){
-        muLabel = new Label("Nombre de clients quittant dans le système par unité de temps (μ)");
+        muLabel = new Label("Nombre de clients sortant par unité de temps (μ)");
 
         muField = new TextField("1");
         muField.minWidth(10);
@@ -122,7 +122,7 @@ public class MM1KParameter extends Stage {
 
     private void initK(){
 
-        kLabel = new Label("K");
+        kLabel = new Label("Nombre maximum de clients");
 
         kField = new TextField("2");
         kField.minWidth(10);
@@ -153,7 +153,7 @@ public class MM1KParameter extends Stage {
         // -----------------
         // This way, we make sure that everything is perfectly aligned
         // Column 1
-        VBox labelsColumn = new VBox(10);
+        VBox labelsColumn = new VBox(19);
         labelsColumn.getChildren().add(lambdaLabel);
         labelsColumn.getChildren().add(muLabel);
         labelsColumn.getChildren().add(kLabel);
