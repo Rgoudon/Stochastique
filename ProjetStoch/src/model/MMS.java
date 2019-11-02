@@ -32,7 +32,7 @@ public class MMS extends FileAttente {
      * @return the list of probabilities
      */
     public List<FloatProperty> computeNbCustomerProbabilities() {
-        int max = 10 * (int) Math.ceil(lambda.getValue());
+        int max = 5 * (int) Math.ceil(lambda.getValue());
         q = new ArrayList<FloatProperty>();
         // Calcul de q0
         Float q0 = (float) (1 / (getSumR() + Math.pow(rho.getValue()*S.getValue(), S.getValue())/(Utils.fact(S.getValue())*(1-rho.getValue()))));

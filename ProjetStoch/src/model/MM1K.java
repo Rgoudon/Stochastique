@@ -54,7 +54,7 @@ public class MM1K extends FileAttente {
      * @return the list of probabilities
      */
     public List<FloatProperty> computeNbCustomerProbabilities() {
-        int max = 10 * (int) Math.ceil(lambda.getValue());
+        int max = 5 * (int) Math.ceil(lambda.getValue());
         q = new ArrayList<FloatProperty>();
         // Calcul de q
         if (rho.getValue() == 1) {
