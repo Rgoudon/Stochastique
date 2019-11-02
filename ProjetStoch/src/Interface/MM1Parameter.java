@@ -207,29 +207,20 @@ public class MM1Parameter extends Stage {
         //Defining X axis
         NumberAxis xAxis = new NumberAxis(0, 10, 1);
         xAxis.setLabel("Nombre de clients");
+        xAxis.setAutoRanging(true);
         //Defining y axis
         NumberAxis yAxis = new NumberAxis(0, 100, 10);
         yAxis.setLabel("% de d'avoir X clients");
+        yAxis.setAutoRanging(true);
         customerProbabilitiesChart = new LineChart(xAxis, yAxis);
     }
 
     private void setDataCustomerProbCharts(List<FloatProperty> customerProbabilities) {
-        // Recreate the graph with proper upper bound value
-        int nbProb = customerProbabilities.size();
-        //Defining X axis
-        NumberAxis xAxis = new NumberAxis(0, nbProb, 1);
-        xAxis.setLabel("Nombre de clients");
-        //Defining y axis
-        NumberAxis yAxis = new NumberAxis(0, 100, 10);
-        yAxis.setLabel("% de d'avoir X clients");
-        customerProbabilitiesChart = new LineChart(xAxis, yAxis);
-
         // Define data
         XYChart.Series series = new XYChart.Series();
-        for(int i = 0; i<nbProb; i++) {
-            series.getData().add(new XYChart.Data(i, customerProbabilities.get(i).getValue()*100));
+        for(int i = 0; i<customerProbabilities.size(); i++) {
+            series.getData().add(new XYChart.Data<Integer, Float>(i, customerProbabilities.get(i).getValue()*100));
         }
-
         //Setting the data to Line chart
         customerProbabilitiesChart.getData().add(series);
     }
@@ -270,6 +261,7 @@ public class MM1Parameter extends Stage {
                 mm1.computeNbCustomerInSystem();
                 mm1.computeNbCustomerProbabilities();
                 setDataCustomerProbCharts(mm1.getProbabilityOfStates());
+                System.out.println(customerProbabilitiesChart.getData().get(0).toString());
                 bindResultatLabel(mm1);
 
             }
