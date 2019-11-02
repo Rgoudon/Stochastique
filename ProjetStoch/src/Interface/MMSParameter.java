@@ -1,6 +1,7 @@
 package Interface;
 
 import javafx.beans.property.FloatProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -28,10 +29,12 @@ public class MMSParameter extends Stage{
     private TextField lambdaField;
     private TextField muField;
     private TextField sField;
+    private ComboBox timeUnitCombo;
 
     private Label lambdaLabel;
     private Label muLabel;
     private Label sLabel;
+    private Label timeUnitLabel;
 
     private Label resultatLabel;
 
@@ -68,10 +71,11 @@ public class MMSParameter extends Stage{
         stage.setWidth(800);
         stage.setTitle("Calculateur file d'attente");
 
-        setLambda();
-        setMu();
-        setS();
-        setFixedLabel();
+        initLambda();
+        initMu();
+        initS();
+        initTimeUnits();
+        initFixedLabel();
         setValidateButton();
         GridPane root = new GridPane();
 
@@ -93,7 +97,7 @@ public class MMSParameter extends Stage{
         stage.setScene(scene);
     }
 
-    private void setLambda(){
+    private void initLambda(){
 
         lambdaLabel = new Label("lambda");
 
@@ -102,7 +106,7 @@ public class MMSParameter extends Stage{
         lambdaField.setPrefWidth(100);
     }
 
-    private void setMu(){
+    private void initMu(){
         muLabel = new Label("mu");
 
         muField = new TextField("1");
@@ -110,7 +114,13 @@ public class MMSParameter extends Stage{
         muField.setPrefWidth(100);
     }
 
-    private void setS(){
+    private void initTimeUnits() {
+        timeUnitLabel = new Label("Unité de temps");
+        String timeUnits[] = { "Milliseconde", "Seconde", "Minute", "Heure"};
+        timeUnitCombo = new ComboBox(FXCollections.observableArrayList(timeUnits));
+    }
+
+    private void initS(){
 
         sLabel = new Label("S");
 
@@ -120,7 +130,7 @@ public class MMSParameter extends Stage{
 
     }
 
-    private void setFixedLabel(){
+    private void initFixedLabel(){
         resultatLabel = new Label("Résultat des calculs");
         tmpsAttSysLabel = new Label("Attente moyenne dans le système");
         tmpsAttFileLabel = new Label("Attente moyenne dans la file");
@@ -155,11 +165,13 @@ public class MMSParameter extends Stage{
         labelsColumn.getChildren().add(lambdaLabel);
         labelsColumn.getChildren().add(muLabel);
         labelsColumn.getChildren().add(sLabel);
+        labelsColumn.getChildren().add(timeUnitLabel);
         // Column 2
         VBox fieldsColumn = new VBox(10);
         fieldsColumn.getChildren().add(lambdaField);
         fieldsColumn.getChildren().add(muField);
         fieldsColumn.getChildren().add(sField);
+        fieldsColumn.getChildren().add(timeUnitCombo);
         // Horizontal box that contains the columns
         HBox paramContent = new HBox(20);
         paramContent.getChildren().add(labelsColumn);
@@ -247,9 +259,8 @@ public class MMSParameter extends Stage{
     }
 
     private void bindResultatLabel(MMS mms) {
-        System.out.println("mm1.getMeanTimeInSystem().getValue() = " + mms.getMeanTimeInSystem().getValue());
-        tmpsAttSysField.textProperty().bind(mms.getMeanTimeInSystem().asString());
-        tmpsAttFileField.textProperty().bind(mms.getMeanTimeInQueue().asString());
+        tmpsAttSysField.textProperty().bind(mms.getMeanTimeInSystem());
+        tmpsAttFileField.textProperty().bind(mms.getMeanTimeInQueue());
         nbClientFileField.textProperty().bind(mms.getNbCustInQueue().asString());
         nbClientSysField.textProperty().bind(mms.getNbCustInSystem().asString());
     }
@@ -288,6 +299,7 @@ public class MMSParameter extends Stage{
                 mms.getLambda().setValue(Float.parseFloat(lambdaField.textProperty().getValue()));
                 mms.getMu().setValue(Float.parseFloat(muField.textProperty().getValue()));
                 mms.getNbServer().setValue(Integer.parseInt(sField.textProperty().getValue()));
+                mms.getTimeUnit().setValue(timeUnitCombo.getValue().toString());
                 try {
                     mms.computeRho();
                 }
