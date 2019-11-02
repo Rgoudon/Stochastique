@@ -69,7 +69,7 @@ public class MMSParameter extends Stage{
         stage.setY(200);
         stage.setHeight(500);
         stage.setWidth(800);
-        stage.setTitle("Calculateur file d'attente");
+        stage.setTitle("Calculateur file d'attente | File d'attente à plusieurs serveurs");
 
         initLambda();
         initMu();
@@ -99,7 +99,7 @@ public class MMSParameter extends Stage{
 
     private void initLambda(){
 
-        lambdaLabel = new Label("lambda");
+        lambdaLabel = new Label("Nombre de clients entrant dans le système par unité de temps (λ)");
 
         lambdaField = new TextField("1");
         lambdaField.minWidth(10);
@@ -107,7 +107,7 @@ public class MMSParameter extends Stage{
     }
 
     private void initMu(){
-        muLabel = new Label("mu");
+        muLabel = new Label("Nombre de clients quittant dans le système par unité de temps (μ)");
 
         muField = new TextField("1");
         muField.minWidth(10);
@@ -250,6 +250,7 @@ public class MMSParameter extends Stage{
     private void setDataCustomerProbCharts(List<FloatProperty> customerProbabilities) {
         // Define data
         XYChart.Series series = new XYChart.Series();
+        series.setName("Nombre de clients dans le système");
         for(int i = 0; i<customerProbabilities.size(); i++) {
             series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i), customerProbabilities.get(i).getValue()*100));
         }

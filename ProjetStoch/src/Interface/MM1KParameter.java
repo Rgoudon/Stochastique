@@ -69,7 +69,7 @@ public class MM1KParameter extends Stage {
         stage.setY(200);
         stage.setHeight(500);
         stage.setWidth(800);
-        stage.setTitle("Calculateur file d'attente");
+        stage.setTitle("Calculateur file d'attente | File d'attente à serveur unique avec limite de clients finie");
 
         initLambda();
         initMu();
@@ -244,6 +244,7 @@ public class MM1KParameter extends Stage {
     private void setDataCustomerProbCharts(List<FloatProperty> customerProbabilities) {
         // Define data
         XYChart.Series series = new XYChart.Series();
+        series.setName("Nombre de clients dans le système");
         for(int i = 0; i<customerProbabilities.size(); i++) {
             series.getData().add(new XYChart.Data<String, Float>(String.valueOf(i), customerProbabilities.get(i).getValue()*100));
         }
