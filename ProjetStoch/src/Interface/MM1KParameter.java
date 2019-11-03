@@ -60,6 +60,8 @@ public class MM1KParameter extends Stage {
     private MM1K mm1k = new MM1K(1);
 
     private Button validateButton;
+    private Button backButton;
+
 
     public void init(){
 
@@ -74,7 +76,7 @@ public class MM1KParameter extends Stage {
         stage.setX(200);
         stage.setY(200);
         stage.setHeight(800);
-        stage.setWidth(580);
+        stage.setWidth(800);
         stage.setTitle("Calculateur file d'attente | File d'attente à serveur unique avec limite de clients finie");
 
         initLambda();
@@ -84,6 +86,7 @@ public class MM1KParameter extends Stage {
         initFixedLabel();
         initRadioButtons();
         setValidateButton();
+        setBackButton();
         GridPane root = new GridPane();
 
         initNbCustomerProbabilitiesChart();
@@ -176,6 +179,7 @@ public class MM1KParameter extends Stage {
         paramContent.getChildren().add(labelsColumn);
         paramContent.getChildren().add(fieldsColumn);
         paramContent.getChildren().add(validateButton);
+        paramContent.getChildren().add(backButton);
         paramPane.setContent(paramContent);
 
         return paramPane;
@@ -288,6 +292,22 @@ public class MM1KParameter extends Stage {
         tmpsAttFileField.textProperty().bind(mm1k.getMeanTimeInQueue());
         nbClientFileField.textProperty().bind(mm1k.getNbCustInQueue().asString());
         nbClientSysField.textProperty().bind(mm1k.getNbCustInSystem().asString());
+    }
+
+    private void setBackButton(){
+        backButton = new Button("Retour");
+        backButton.setMinWidth(10);
+        backButton.setPrefWidth(100);
+
+        backButton.setOnAction( new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                FirstWindow backWindow = new FirstWindow();
+                backWindow.init();
+                stage.close();
+                //System.out.println("wat");
+            }
+        });
     }
 
     private void setValidateButton(){

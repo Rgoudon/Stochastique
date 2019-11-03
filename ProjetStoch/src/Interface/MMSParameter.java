@@ -59,6 +59,8 @@ public class MMSParameter extends Stage{
     private MMS mms = new MMS(2);
 
     private Button validateButton;
+    private Button backButton;
+
 
 
     public void init(){
@@ -74,7 +76,7 @@ public class MMSParameter extends Stage{
         stage.setX(200);
         stage.setY(200);
         stage.setHeight(800);
-        stage.setWidth(580);
+        stage.setWidth(800);
         stage.setTitle("Calculateur file d'attente | File d'attente à plusieurs serveurs");
 
         initLambda();
@@ -84,6 +86,7 @@ public class MMSParameter extends Stage{
         initFixedLabel();
         initRadioButtons();
         setValidateButton();
+        setBackButton();
         GridPane root = new GridPane();
 
         initNbCustomerProbabilitiesChart();
@@ -184,6 +187,7 @@ public class MMSParameter extends Stage{
         paramContent.getChildren().add(labelsColumn);
         paramContent.getChildren().add(fieldsColumn);
         paramContent.getChildren().add(validateButton);
+        paramContent.getChildren().add(backButton);
         paramPane.setContent(paramContent);
         return paramPane;
     }
@@ -318,6 +322,22 @@ public class MMSParameter extends Stage{
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
+    }
+
+    private void setBackButton(){
+        backButton = new Button("Retour");
+        backButton.setMinWidth(10);
+        backButton.setPrefWidth(100);
+
+        backButton.setOnAction( new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                FirstWindow backWindow = new FirstWindow();
+                backWindow.init();
+                stage.close();
+                //System.out.println("wat");
+            }
+        });
     }
 
     private void setValidateButton(){
