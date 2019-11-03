@@ -32,7 +32,7 @@ public class FirstWindow extends Stage {
         stage.setX(200);
         stage.setY(200);
         stage.setHeight(320);
-        stage.setWidth(450);
+        stage.setWidth(520);
         stage.setTitle("Calculateur de files d'attente");
 
         setMM1Button();
@@ -40,7 +40,7 @@ public class FirstWindow extends Stage {
         setMMSButton();
 
         title.setStyle("-fx-font-weight: bold");
-        title.setStyle("-fx-font-size: 32");
+        title.setStyle("-fx-font-size: 38");
 
         GridPane root = new GridPane();
         root.addRow(1,title);
@@ -56,7 +56,7 @@ public class FirstWindow extends Stage {
         root.setStyle("-fx-padding: 15;" );
 
         Scene scene = new Scene(root);
-
+        stage.setResizable(false);
         stage.setScene(scene);
     }
 
@@ -64,7 +64,7 @@ public class FirstWindow extends Stage {
 
         MM1 = new Button("File d'attente à serveur unique sans limite de clients (MM1)");
         MM1.minWidth(10);
-        MM1.setPrefWidth(450);
+        MM1.setPrefWidth(500);
 
         MM1.setOnAction( new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
@@ -79,7 +79,7 @@ public class FirstWindow extends Stage {
     private void setMMSButton(){
         MMS = new Button("File d'attente à plusieurs serveurs (MMS)");
         MMS.minWidth(10);
-        MMS.setPrefWidth(450);
+        MMS.setPrefWidth(500);
 
         MMS.setOnAction( new EventHandler<ActionEvent>() {
                              @Override public void handle(ActionEvent e) {
@@ -95,7 +95,7 @@ public class FirstWindow extends Stage {
 
         MM1K = new Button("File d'attente à serveur unique avec limite de clients finie (MM1K)");
         MM1K.minWidth(10);
-        MM1K.setPrefWidth(450);
+        MM1K.setPrefWidth(500);
 
         MM1K.setOnAction( new EventHandler<ActionEvent>() {
                              @Override public void handle(ActionEvent e) {
