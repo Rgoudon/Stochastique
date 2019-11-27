@@ -1,11 +1,9 @@
 package Interface;
 
 import javafx.beans.property.FloatProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
@@ -15,7 +13,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.MM1;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -26,6 +23,8 @@ public class MM1Parameter extends Stage {
     private TitledPane paramPane;
     private TitledPane resultPane;
     private TitledPane graphsPane;
+
+    private FAMenuBar menubar = new FAMenuBar();
 
     private TextField lambdaField;
     private TextField muField;
@@ -86,16 +85,17 @@ public class MM1Parameter extends Stage {
 
         initNbCustomerProbabilitiesChart();
 
-        root.add(initTitledPaneParametres(), 0, 0, 4, 4);
-        root.add(initTitledPaneResultats(), 0, 4, 4, 3);
-        root.add(initTitledPaneGraphiques(), 0, 7, 4, 3);
+        root.add(menubar, 0, 0, 4, 1);
+        root.add(initTitledPaneParametres(), 0, 1, 4, 4);
+        root.add(initTitledPaneResultats(), 0, 5, 4, 3);
+        root.add(initTitledPaneGraphiques(), 0, 8, 4, 3);
 
         // Set the horizontal spacing to 15px
         root.setHgap(15);
         // Set the vertical spacing to 25px
         root.setVgap(25);
 
-        root.setStyle("-fx-padding: 15;" );
+        //root.setStyle("-fx-padding: 15;" );
 
         Scene scene = new Scene(root);
 
